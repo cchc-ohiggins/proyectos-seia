@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
 /* Composición: portada azul con selector de modo (Calificados / Presentados), barra de filtros fija,
    tablero de tarjetas, mapa a todo el ancho y tabla de proyectos al final. Tema claro. */
@@ -415,6 +415,139 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 @media (max-width:1100px){.hero-in{grid-template-columns:minmax(0,1fr) minmax(0,.9fr)}}
 @media (max-width:760px){.hero-in{grid-template-columns:1fr}.hero-viz{position:absolute;right:-14%;top:60px;width:62%;opacity:.3}.topnav .links{display:none}.viz-card,.viz-cap{display:none}}
 .pop .qn{margin-top:8px;padding:6px 8px;border-left:3px solid #003D6B;background:#F3F7FB;color:#003D6B;font-size:12px;line-height:1.4;border-radius:2px}
+
+/* ================= Capa de diseño 4: institucional y sobria ================= */
+/* Criterio: fondo neutro, tarjetas planas con borde fino, una sola tipografía, azul marino como color principal,
+   sin degradados, sin sombras marcadas ni animaciones decorativas. El naranja queda solo para marcar selección. */
+:root{--bg:#F5F7FA;--f-display:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;--line:#E1E6EC;--sh:none;--sh2:none}
+body::after{display:none}
+.loading{background:#003D6B}
+.loading::after{display:none}
+.prog{background:#006EDC;height:2px}
+.fab{background:#003D6B;box-shadow:0 2px 8px rgba(0,30,60,.25)}
+/* Portada */
+.hero{background:#fff;color:var(--ink);padding:10px 0 26px;border-bottom:1px solid var(--line);overflow:visible}
+.hero::before,.hero-wave,.hero-art,.squig,.hero-viz::before,.viz-cap{display:none}
+.topnav{padding-block:6px 14px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.topnav .logo{color:var(--navy);font-weight:700;font-size:16px;letter-spacing:0}
+.topnav .logo .mk{background:var(--navy);border:0;box-shadow:none}
+.topnav .logo .mk::after{background:#fff}
+.topnav a{color:var(--ink2);font-weight:500;font-size:13px;border-radius:6px;padding:7px 11px}
+.topnav a:hover{background:var(--navy-soft);color:var(--navy)}
+.hero-in{grid-template-columns:minmax(0,1fr) minmax(0,.55fr);gap:40px;align-items:center}
+.eyebrow{color:var(--muted);font-weight:600;font-size:11.5px;letter-spacing:.1em;margin-bottom:8px}
+.eyebrow::before{display:none}
+.hero h1{font-size:clamp(28px,3.6vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.12;color:var(--navy)}
+.hero h1 span{color:var(--navy)}
+.hero-reg{margin:8px 0 0;font:500 clamp(16px,1.8vw,19px)/1.3 var(--f-body);color:var(--blue)}
+.hero .lede{color:var(--ink2);font-size:14.5px;max-width:64ch;margin-top:10px}
+.hero .lede b{color:var(--ink)}
+.modes{display:inline-flex;gap:0;margin-top:20px;max-width:none;border:1px solid #C9D3DE;border-radius:8px;overflow:hidden;background:#fff}
+.mode{border-radius:0;border:0;background:#fff;color:var(--ink);padding:10px 18px;gap:0;min-width:200px;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none!important;transform:none!important;flex-direction:column;align-items:flex-start}
+.mode + .mode{border-left:1px solid #C9D3DE}
+.mode .m-ic{display:none}
+.mode:hover{background:#F2F6FA}
+.mode .m-t{font-size:15px;font-weight:600;color:var(--navy)}
+.mode .m-n,.mode .m-n b{color:var(--muted);font-size:12.5px;font-weight:400}
+.mode .m-n b{color:var(--ink2);font-weight:600}
+.mode[aria-pressed="true"]{background:var(--navy)}
+.mode[aria-pressed="true"] .m-t,.mode[aria-pressed="true"] .m-n,.mode[aria-pressed="true"] .m-n b{color:#fff}
+.mode[aria-pressed="true"] .m-n{color:#C8D9EA}
+.mode:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.hero-viz{margin:0}
+.hero-viz svg{max-height:250px;filter:none}
+.hero-viz .reg{fill:#E8EEF5;stroke:var(--navy);stroke-width:1.2;stroke-opacity:1}
+.hero-viz .cb{stroke:#9FB2C6;stroke-opacity:.8;stroke-width:.5}
+.pd{fill:var(--blue);fill-opacity:.7}
+.pd.p{animation:none;fill:var(--blue)}
+.viz-card{display:none}
+/* Barra de filtros */
+.bar{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 1px 0 var(--line),0 6px 12px -10px rgba(0,30,60,.25);border-bottom:0}
+.bar-in{padding-block:12px 10px}
+.f label{color:var(--ink2);font-size:10.5px;letter-spacing:.07em}
+.f select,.f input,.ddb{border-radius:6px;border:1px solid #C9D3DE;height:36px;background:#fff}
+.f-reg{grid-column:span 2}.f-y,.f-m,.f-t{grid-column:span 1}.f-e{grid-column:span 2}.f-i{grid-column:span 2}.f-q{grid-column:span 2}
+.btn{border-radius:6px;transform:none!important;box-shadow:none!important;font-weight:600}
+.btn.pri{background:var(--blue);border-color:var(--blue)}
+.btn.pri:hover{background:#005CB8;border-color:#005CB8}
+.btn.sec{background:var(--navy);border-color:var(--navy)}
+.sumline{font-size:12.5px;color:var(--ink2)}
+.dd{position:relative}
+.ddb{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:36px;padding:0 10px;border:1px solid #C9D3DE;border-radius:6px;background:#fff;cursor:pointer;font-size:14px;color:var(--ink)}
+.ddb svg{width:16px;height:16px;flex:none;color:var(--muted)}
+.ddb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ddb:hover{border-color:var(--blue)}
+.ddb:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.ddb.on{border-color:var(--navy);background:var(--navy-soft);font-weight:600;color:var(--navy)}
+.ddp{position:absolute;left:0;top:calc(100% + 4px);z-index:1200;min-width:270px;background:#fff;border:1px solid #C9D3DE;border-radius:8px;box-shadow:0 10px 28px -8px rgba(0,30,60,.3);padding:6px}
+.f .ddi,.ddi{text-transform:none;letter-spacing:0;font-weight:400;font-size:13.5px;display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:6px;cursor:pointer;font-size:13.5px;color:var(--ink)}
+.ddi:hover{background:#F2F6FA}
+.ddi input{width:16px;height:16px;margin:0;accent-color:var(--navy);flex:none}
+.ddi i{width:9px;height:9px;border-radius:50%;flex:none}
+.ddi span{flex:1}
+.ddi b{font-weight:600;color:var(--ink2);font-variant-numeric:tabular-nums}
+.ddx{all:unset;box-sizing:border-box;display:block;width:100%;margin-top:4px;padding:8px 9px;border-top:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--blue);cursor:pointer;text-align:left}
+.ddx:disabled{color:var(--muted);cursor:default}
+.actv{display:inline-flex;gap:6px;flex-wrap:wrap}
+.pill{all:unset;cursor:pointer;display:inline-flex;gap:6px;align-items:center;height:26px;padding:0 10px;border-radius:13px;background:var(--navy-soft);color:var(--navy);font-size:12px;font-weight:600}
+.pill:hover{background:#D3E1EE}
+.pill:focus-visible{outline:2px solid var(--blue)}
+/* Tarjetas */
+main{padding-top:20px}
+.kpis{gap:12px;margin-top:0}
+.kpi,.card,.ins,.tscroll,.notes{border:1px solid var(--line);border-radius:8px;box-shadow:none;background:#fff}
+.kpi{padding:14px 16px;animation:none}
+.kpi::before,.kpi .ic{display:none}
+.kpi .k-l{padding-right:0;color:var(--ink2);font-size:11px}
+.kpi .k-v{font-size:28px;font-weight:600;letter-spacing:-.01em;color:var(--navy)}
+.kpi.hl{background:#fff;border-color:#B9CCE0}
+.kpi.click:hover{box-shadow:none;transform:none;border-color:var(--blue)}
+.kpi.click[aria-pressed="true"]{box-shadow:none;border-color:var(--navy);background:var(--navy-soft)}
+.kpi .go{opacity:1;transform:none;color:var(--blue);font-weight:500}
+.kick{color:var(--muted);font-size:11px;letter-spacing:.12em}
+.kick::before{display:none}
+.sec-h{margin:34px 0 12px}
+.sec-h h2{font-size:21px;font-weight:600;letter-spacing:-.01em;color:var(--navy);margin-top:2px}
+.sec-h p{font-size:13px}
+.ins{padding:14px 16px;background:#fff;animation:none}
+.ins .ic{width:30px;height:30px;background:var(--navy-soft);color:var(--navy)}
+.ins .ic svg{width:16px;height:16px}
+.ins p{font-size:14px}
+.ins p b{color:var(--navy);font-weight:600}
+.grid,.insights{gap:12px}
+.card{padding:16px 18px;transition:none}
+.card:hover{box-shadow:none}
+.card h3{font-size:15px;font-weight:600;color:var(--navy)}
+.card h3::before{display:none}
+.heat td{border-radius:4px}
+.heat td:hover{transform:none;box-shadow:0 0 0 2px var(--navy)}
+.seg button[aria-pressed="true"]{background:var(--navy)}
+#map{border-radius:6px;background:#DDE6EF}
+.mapttl{border-radius:6px;box-shadow:0 1px 6px rgba(0,30,60,.18)}
+.mapttl #mt-t{font-weight:600}
+.tlist .t-b i{background:var(--blue)}
+/* Tabla */
+.tfil{display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1.2fr)) auto;gap:10px 12px;align-items:end;margin:0 0 6px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.tfil .tact{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.tnote{margin:0 0 10px;font-size:12px;color:var(--muted)}
+.tscroll{overflow-x:auto}
+.tbl th{background:var(--navy);padding:11px 14px;font-weight:600}
+.tbl th:hover{background:#00315A}
+.tbl tbody tr:hover{background:#F3F7FB}
+.tbl td a{color:var(--blue)}
+.tbl tfoot td{position:static;background:var(--navy-soft);border-top:2px solid var(--navy);font-weight:600;color:var(--navy);padding:12px 14px}
+.tbl tfoot .tl{text-align:right}
+.tbl tfoot .tv{font-size:15px;white-space:nowrap}
+.pager button{border-radius:6px}
+.notes{padding:18px 22px}
+.notes h2{font-size:16px;color:var(--navy)}
+/* Pie */
+.foot{margin-top:36px;padding:26px 0 28px;background:var(--navy)}
+.foot svg,.foot .dots{display:none}
+.foot b{font-size:15px;font-weight:600}
+@media (max-width:1100px){.bar-in{grid-template-columns:repeat(6,minmax(0,1fr))}.f-reg{grid-column:span 3}.f-e,.f-i{grid-column:span 3}.f-q{grid-column:span 6}.f-y,.f-m,.f-t{grid-column:span 2}.tfil{grid-template-columns:repeat(2,minmax(0,1fr))}.tfil .tact{grid-column:1/-1;justify-content:flex-start}}
+@media (max-width:900px){.hero-in{grid-template-columns:1fr}.hero-viz{display:none}.modes{display:flex;width:100%}.mode{min-width:0;flex:1}}
+@media (max-width:640px){.bar-in{grid-template-columns:repeat(2,minmax(0,1fr))}.f-reg,.f-q,.f-e,.f-i{grid-column:span 2}.f-y,.f-m,.f-t{grid-column:span 1}.tfil{grid-template-columns:1fr}.mode{padding:9px 12px}.kpi .k-v{font-size:24px}.ddp{min-width:min(280px,86vw)}}
 /* required styles */
  
  .leaflet-pane,
@@ -1087,7 +1220,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 <button class="fab" id="fab" type="button" aria-label="Volver arriba" hidden>↑</button>
 <div class="hero" id="hero">
   <div class="wrap"><nav class="topnav" aria-label="Secciones de la página"><span class="logo"><span class="mk" aria-hidden="true"></span>Proyectos SEIA</span>
-    <div class="links"><a href="#chips">Resumen</a><a href="#a-tiempo">Tiempo</a><a href="#a-sector">Sector</a><a href="#a-mapa">Territorio</a><a href="#sec-tabla">Proyectos</a><a href="#a-notas">Notas</a></div></nav></div>
+    <div class="links"><a href="#kpis">Resumen</a><a href="#a-tiempo">Tiempo</a><a href="#a-sector">Sector</a><a href="#a-mapa">Territorio</a><a href="#sec-tabla">Proyectos</a><a href="#a-notas">Notas</a></div></nav></div>
   <div class="wrap hero-in">
     <div class="hero-txt">
       <p class="eyebrow">Sistema de Evaluación de Impacto Ambiental · SEIA</p>
@@ -1122,6 +1255,9 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     <div class="f f-m"><label for="f-mes">Mes</label><select id="f-mes"></select></div>
     <div class="f f-t"><label for="f-tipo">Tipo</label>
       <select id="f-tipo"><option value="all">Todos</option><option value="DIA">DIA</option><option value="EIA">EIA</option></select></div>
+    <div class="f f-e"><label for="f-est">Estado</label>
+      <div class="dd" id="dd-est"><button type="button" class="ddb" id="f-est" aria-haspopup="true" aria-expanded="false"><span id="est-lbl">Todos</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="ddp" id="est-pop" role="group" aria-label="Estado del proyecto" hidden></div></div></div>
     <div class="f f-i"><label for="f-inv">Inversión mínima</label>
       <select id="f-inv">
         <option value="0">Sin mínimo</option><option value="1">Desde MMU$ 1</option><option value="10">Desde MMU$ 10</option>
@@ -1136,6 +1272,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
         Excel de esta vista</button>
       <button class="btn" id="btn-clear" type="button">Limpiar filtros</button>
+      <span class="actv" id="actv"></span>
       <span class="sp"></span>
       <span class="sumline" id="sumline"></span>
     </div>
@@ -1143,7 +1280,6 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 </div>
 
 <main class="wrap">
-  <div class="chips" id="chips" role="group" aria-label="Filtrar por estado"></div>
   <div class="kpis" id="kpis"></div>
   <p class="kick" style="margin:30px 0 12px">Lo que llama la atención</p>
   <div class="insights" id="insights"></div>
@@ -1209,7 +1345,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       <div class="cbox" id="box-comuna"><canvas id="ch-comuna" aria-label="Proyectos por comuna" role="img"></canvas></div>
     </section>
     <section class="card c4">
-      <h3>Comparación entre regiones</h3><p class="cap">La región seleccionada va en naranja. Clic para cambiar de región.</p>
+      <h3>Comparación entre regiones</h3><p class="cap">La región seleccionada va en azul marino. Clic para cambiar de región.</p>
       <div class="cbox" id="box-region"><canvas id="ch-region" aria-label="Proyectos por región" role="img"></canvas></div>
     </section>
     <section class="card c4">
@@ -1220,7 +1356,16 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 
   <div class="sec-h" id="sec-tabla"><div><span class="kick">Detalle</span><h2 id="h-tabla">Proyectos</h2><p id="t-sub"></p></div>
     <button class="btn" id="btn-up" type="button">↑ Volver a los gráficos</button></div>
-  <div class="tscroll"><table class="tbl" id="tbl"><thead></thead><tbody></tbody></table></div>
+  <div class="tfil" id="tfil" role="group" aria-label="Filtros de la tabla">
+    <div class="f f-tq"><label for="t-fq">Nombre del proyecto o titular</label><input id="t-fq" type="search" placeholder="Buscar en la tabla" autocomplete="off"></div>
+    <div class="f"><label for="t-fsec">Sector</label><select id="t-fsec"></select></div>
+    <div class="f"><label for="t-fest">Estado</label><select id="t-fest"></select></div>
+    <div class="f"><label for="t-fcom">Comuna</label><select id="t-fcom"></select></div>
+    <div class="tact"><button class="btn" id="t-clear" type="button">Limpiar filtros de la tabla</button>
+      <button class="btn sec" id="t-xlsx" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>Excel de esta tabla</button></div>
+  </div>
+  <p class="tnote">Estos filtros solo cambian la tabla; los gráficos y el mapa siguen la barra de arriba.</p>
+  <div class="tscroll"><table class="tbl" id="tbl"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
   <div class="pager" id="pager"></div>
 
   <section class="notes" id="a-notas">
@@ -1361,7 +1506,7 @@ function init(DATA, CHILE, META, COM){
     setTimeout(()=>{ el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
       const t=$('.tscroll'); t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash'); },60); }
   function goT(fn){ fn(); S.page=0; render(); if(S.estados.size) toTable(); }
-  $('#btn-up').addEventListener('click',()=>{ const e=$('#chips'); e.scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('#btn-up').addEventListener('click',()=>{ const e=$('#kpis'); e.scrollIntoView({behavior:'smooth',block:'start'}); });
   $('#kpis').addEventListener('click',ev=>{ const d=ev.target.closest('.kpi[data-e]'); if(d) kpiGo(d.dataset.e); });
   $('#kpis').addEventListener('keydown',ev=>{ if(ev.key!=='Enter'&&ev.key!==' ') return; const d=ev.target.closest('.kpi[data-e]'); if(d){ ev.preventDefault(); kpiGo(d.dataset.e); } });
   function kpiGo(k){
@@ -1380,7 +1525,7 @@ function init(DATA, CHILE, META, COM){
   $('#met-n').addEventListener('click',()=>go(()=>{S.metric='n';}));
   $('#met-inv').addEventListener('click',()=>go(()=>{S.metric='inv';}));
   $('#btn-clear').addEventListener('click',()=>go(()=>{S.yFrom=YMIN;S.yTo=YMAX;S.month=0;S.estados.clear();S.sectores.clear();S.comuna='';S.tipo='all';S.invMin=0;S.q='';}));
-  $('#btn-xlsx').addEventListener('click',exportExcel);
+  $('#btn-xlsx').addEventListener('click',()=>exportExcel(false)); $('#t-xlsx').addEventListener('click',()=>exportExcel(true));
   $('#btn-minuta').addEventListener('click',()=>exportMinuta(S.region));
   $('#m-capa').addEventListener('change',e=>{S.capa=e.target.value;renderMap(CUR,false);});
   $('#m-color').addEventListener('change',e=>{S.color=e.target.value;renderMap(CUR,false);});
@@ -1548,7 +1693,7 @@ function init(DATA, CHILE, META, COM){
     const selR = S.region!=='Nacional' ? [...COMV.keys()].filter(k=>k.startsWith(S.region+'|')) : [...COMV.keys()];
     RAMPF = makeRamp(S.capa==='reg' ? [...REGV.entries()].filter(e=>e[0]!=='Interregional').map(e=>S.metric==='n'?e[1].n:e[1].inv) : selR.map(k=>S.metric==='n'?COMV.get(k).n:COMV.get(k).inv));
     comLayer.setStyle(styleCom);
-    if(REGGEO[S.region]) L.geoJSON(REGGEO[S.region].geom,{pane:'pbord',interactive:false,style:{color:ORANGE,weight:2.8,fill:false}}).addTo(selLayer);
+    if(REGGEO[S.region]) L.geoJSON(REGGEO[S.region].geom,{pane:'pbord',interactive:false,style:{color:NAVY,weight:2.2,fill:false}}).addTo(selLayer);
     const withXY = rows.filter(r=>r.la!=null), noXY = rows.length-withXY.length;
     const nRef = withXY.filter(r=>r.q===2).length;
     $('#m-note').textContent = (S.capa==='proj') ? [ nRef ? `${fmtN(nRef)} con ubicación referencial` : '', noXY ? `${fmtN(noXY)} sin coordenadas (no se grafican)` : '' ].filter(Boolean).join(' · ') : '';
@@ -1561,7 +1706,7 @@ function init(DATA, CHILE, META, COM){
     const ramp = () => RAMPF.classes.map(c=>`<span><i style="background:${c.c};border-radius:2px"></i>${rl(c)}</span>`).join('');
     if(S.capa==='proj'){
       [...withXY].sort((a,b)=>b.inv-a.inv).forEach(r=>{
-        const m = L.circleMarker([r.la,r.lo],r.q===2 ? {renderer:canvasR,radius:3+2.2*Math.log10(1+r.inv),color:'#003D6B',weight:1.3,dashArray:'2 2',fillColor:colOf(r),fillOpacity:.55} : {renderer:canvasR,radius:3+2.2*Math.log10(1+r.inv),color:'#fff',weight:1,fillColor:colOf(r),fillOpacity:.9});
+        const m = L.circleMarker([r.la,r.lo],r.q===2 ? {renderer:canvasR,radius:2.6+1.7*Math.log10(1+r.inv),color:'#003D6B',weight:1.2,dashArray:'2 2',fillColor:colOf(r),fillOpacity:.55} : {renderer:canvasR,radius:2.6+1.7*Math.log10(1+r.inv),color:'#fff',weight:.8,fillColor:colOf(r),fillOpacity:.85});
         m.bindPopup(()=>popHTML(r),{maxWidth:330}); m.addTo(projLayer);
       });
       let items;
@@ -1681,22 +1826,36 @@ function init(DATA, CHILE, META, COM){
     const per = S.yFrom===S.yTo ? ''+S.yFrom : S.yFrom+'–'+S.yTo;
     const inv = CUR.reduce((a,r)=>a+r.inv,0);
     $('#sumline').innerHTML = `<b class="num">${fmtN(CUR.length)}</b> proyectos ${mn} · <b class="num">MMU$ ${fmtI(inv)}</b> · ${esc(regFull(S.region))} · ${per}${S.month?' · '+MES_L[S.month-1]:''}`;
-    renderHero(CUR); renderChips(); renderKPIs(CUR); renderInsights(CUR); renderYear(per); renderMes(per); renderHeat(); renderSector(); renderEstado(); renderComunas(); renderRegiones(); renderTitulares(CUR);
+    renderHero(CUR); renderEstadoFilter(); renderActive(); renderKPIs(CUR); renderInsights(CUR); renderYear(per); renderMes(per); renderHeat(); renderSector(); renderEstado(); renderComunas(); renderRegiones(); renderTitulares(CUR);
     const dd = S.mode==='C' ? 'fecha de calificación' : 'fecha de presentación';
     $('#t-evo').textContent = `${regFull(S.region)}. Los años y meses se cuentan por ${dd}.`;
     $('#t-sec').textContent = `${regFull(S.region)}, ${per}${S.comuna?' · '+S.comuna:''}.`;
     $('#t-map').textContent = `Los límites muestran regiones y comunas. Cada punto es un proyecto ${mn} con su ubicación declarada; también puedes ver la intensidad por comuna o el resumen por región.`;
-    renderMap(CUR,false); renderTable(CUR);
+    renderMap(CUR,false); fillTF(); renderTable();
   }
 
-  function renderChips(){
+  /* ---------- filtro Estado (barra) y filtros activos ---------- */
+  function renderEstadoFilter(){
     const c = agg(rowsFor('estado'),r=>r.e);
-    const el = $('#chips');
-    el.innerHTML = '<span class="lab">Estado · clic para ver los proyectos</span>' + ESTADOS.filter(e=>c.has(e.k)||S.estados.has(e.k)).map(e=>
-      `<button type="button" class="chip" data-k="${esc(e.k)}" aria-pressed="${S.estados.has(e.k)}"><i style="background:${e.c}"></i>${esc(EL[e.k])} <b>${fmtN(c.has(e.k)?c.get(e.k).n:0)}</b></button>`).join('') +
-      (S.estados.size||S.sectores.size||S.comuna ? '<button type="button" class="chip x" data-k="__x">Quitar selección</button>' : '');
-    el.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{ const k=b.getAttribute('data-k');
-      goT(()=>{ if(k==='__x'){S.estados.clear();S.sectores.clear();S.comuna='';} else S.estados.has(k)?S.estados.delete(k):S.estados.add(k); }); }));
+    const list = ESTADOS.filter(e=>c.has(e.k)||S.estados.has(e.k));
+    $('#est-pop').innerHTML = list.map((e,i)=>`<label class="ddi"><input type="checkbox" data-i="${i}" data-k="${esc(e.k)}" ${S.estados.has(e.k)?'checked':''}><i style="background:${e.c}"></i><span>${esc(EL[e.k])}</span><b>${fmtN(c.has(e.k)?c.get(e.k).n:0)}</b></label>`).join('')
+      + `<button type="button" class="ddx" ${S.estados.size?'':'disabled'}>Mostrar todos los estados</button>`;
+    const n=S.estados.size; $('#est-lbl').textContent = n===0 ? 'Todos' : (n===1 ? EL[[...S.estados][0]] : n+' estados');
+    $('#f-est').classList.toggle('on',n>0);
+  }
+  function setDD(open){ $('#est-pop').hidden=!open; $('#f-est').setAttribute('aria-expanded',open); }
+  $('#f-est').addEventListener('click',e=>{ e.stopPropagation(); setDD($('#est-pop').hidden); });
+  document.addEventListener('click',e=>{ if(!e.target.closest('#dd-est')) setDD(false); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !$('#est-pop').hidden){ setDD(false); $('#f-est').focus(); } });
+  $('#est-pop').addEventListener('change',e=>{ const k=e.target.dataset.k; if(!k) return;
+    go(()=>{ S.estados.has(k)?S.estados.delete(k):S.estados.add(k); });
+    const again=[...document.querySelectorAll('#est-pop input')].find(i=>i.dataset.k===k); if(again) again.focus(); });
+  $('#est-pop').addEventListener('click',e=>{ if(e.target.closest('.ddx') && !e.target.closest('.ddx').disabled){ go(()=>{S.estados.clear();}); } });
+  function renderActive(){
+    const parts = [...S.sectores].map(k=>`<button type="button" class="pill" data-t="s" data-k="${esc(k)}" aria-label="Quitar sector ${esc(k)}">Sector: ${esc(k)} <span aria-hidden="true">×</span></button>`);
+    if(S.comuna) parts.push(`<button type="button" class="pill" data-t="c" aria-label="Quitar comuna ${esc(S.comuna)}">Comuna: ${esc(S.comuna)} <span aria-hidden="true">×</span></button>`);
+    const el=$('#actv'); el.innerHTML=parts.join('');
+    el.querySelectorAll('.pill').forEach(b=>b.addEventListener('click',()=>go(()=>{ if(b.dataset.t==='c') S.comuna=''; else S.sectores.delete(b.dataset.k); })));
   }
 
   function renderKPIs(rows){
@@ -1805,7 +1964,7 @@ function init(DATA, CHILE, META, COM){
   function renderRegiones(){
     const g = [...agg(rowsFor('region'),r=>r.r).values()].sort((a,b)=>mv(b)-mv(a)), ch=charts.region;
     ch._keys = g.map(o=>o.k); ch.data.labels = g.map(o=>o.k); const ds=ch.data.datasets[0]; ds.data=g.map(mv);
-    ds.backgroundColor = g.map(o=>o.k===S.region?ORANGE:BLUE);
+    ds.backgroundColor = g.map(o=>o.k===S.region?NAVY:'#8DB8E8');
     sizeBox('#box-region',g.length); ch.resize(); ch.update();
   }
   function renderTitulares(rows){
@@ -1817,10 +1976,28 @@ function init(DATA, CHILE, META, COM){
   const COLS = [['n','Proyecto'],['s','Sector'],['e','Estado'],['ti','Titular'],['c','Comuna'],['inv','Inversión MMU$','r'],['d',null,'r'],['_','Ficha']];
   function sorted(rows){ const k=S.sort.k, d=S.sort.dir;
     return [...rows].sort((a,b)=>{ const x=a[k], y=b[k]; if(typeof x==='number'||typeof y==='number') return ((x||0)-(y||0))*d; return String(x||'').localeCompare(String(y||''),'es')*d; }); }
-  function renderTable(rows){
+  const TF = {q:'',sec:'',est:'',com:''};
+  function tableRows(){
+    return CUR.filter(r=> (!TF.sec||r.s===TF.sec) && (!TF.est||r.e===TF.est) && (!TF.com||r.cs.includes(TF.com)) && (!TF.q||r.hay.indexOf(TF.q)>=0));
+  }
+  function fillTF(){
+    const opt=(id,all,items,cur)=>{ const el=$(id); el.innerHTML=`<option value="">${all}</option>`+items.map(([v,l,n])=>`<option value="${esc(v)}">${esc(l)} (${fmtN(n)})</option>`).join(''); el.value=items.some(x=>x[0]===cur)?cur:''; return el.value; };
+    const by=(fn)=>[...agg(CUR,fn).values()];
+    TF.sec=opt('#t-fsec','Todos los sectores',by(r=>r.s).sort((a,b)=>b.n-a.n).map(o=>[o.k,o.k,o.n]),TF.sec);
+    TF.est=opt('#t-fest','Todos los estados',ESTADOS.map(e=>[e.k,EL[e.k],CUR.filter(r=>r.e===e.k).length]).filter(x=>x[2]>0),TF.est);
+    TF.com=opt('#t-fcom','Todas las comunas',by(r=>r.cs).sort((a,b)=>a.k.localeCompare(b.k,'es')).map(o=>[o.k,o.k,o.n]),TF.com);
+  }
+  const tfChange=()=>{ S.page=0; renderTable(); };
+  $('#t-fsec').addEventListener('change',e=>{TF.sec=e.target.value;tfChange();});
+  $('#t-fest').addEventListener('change',e=>{TF.est=e.target.value;tfChange();});
+  $('#t-fcom').addEventListener('change',e=>{TF.com=e.target.value;tfChange();});
+  let tqT; $('#t-fq').addEventListener('input',e=>{ clearTimeout(tqT); const v=e.target.value.trim().toLowerCase(); tqT=setTimeout(()=>{TF.q=v;tfChange();},200); });
+  $('#t-clear').addEventListener('click',()=>{ TF.q=TF.sec=TF.est=TF.com=''; $('#t-fq').value=''; fillTF(); tfChange(); });
+  function renderTable(){
+    const rows = tableRows();
     const dl = S.mode==='C' ? 'Fecha calificación' : 'Fecha presentación';
     $('#tbl thead').innerHTML = '<tr>'+COLS.map(c=>{ const lab=c[1]||dl; const arrow = S.sort.k===c[0]?(S.sort.dir>0?' ▲':' ▼'):''; return `<th class="${c[2]||''}" data-k="${c[0]}" ${c[0]==='_'?'style="cursor:default"':''}>${lab}${arrow}</th>`; }).join('')+'</tr>';
-    $('#tbl thead').querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{ const k=th.dataset.k; if(k==='_') return; S.sort = S.sort.k===k?{k,dir:-S.sort.dir}:{k,dir:(k==='inv'||k==='d')?-1:1}; S.page=0; renderTable(CUR); }));
+    $('#tbl thead').querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{ const k=th.dataset.k; if(k==='_') return; S.sort = S.sort.k===k?{k,dir:-S.sort.dir}:{k,dir:(k==='inv'||k==='d')?-1:1}; S.page=0; renderTable(); }));
     const s = sorted(rows), pages = Math.max(1,Math.ceil(s.length/PAGE)); if(S.page>=pages) S.page=pages-1;
     const sl = s.slice(S.page*PAGE,(S.page+1)*PAGE);
     $('#tbl tbody').innerHTML = sl.length ? sl.map(r=>`<tr>
@@ -1831,10 +2008,13 @@ function init(DATA, CHILE, META, COM){
       <td class="r num"><b>${fmtI(r.inv)}</b></td><td class="r num">${fmtD(r.d)}</td>
       <td><a href="${URLF(r.id)}" target="_blank" rel="noopener" aria-label="Abrir ficha en el SEIA">Ver ↗</a></td></tr>`).join('')
       : '<tr><td colspan="8" class="empty">No hay proyectos con estos filtros.</td></tr>';
+    const tot = s.reduce((a,r)=>a+r.inv,0);
+    $('#tbl tfoot').innerHTML = `<tr><td colspan="5" class="tl">Total de la tabla · ${fmtN(s.length)} proyecto${s.length===1?'':'s'} (todas las páginas)</td><td class="r num tv">MMU$ ${fmtI(tot)}</td><td colspan="2"></td></tr>`;
+    const tfOn = TF.q||TF.sec||TF.est||TF.com;
     $('#h-tabla').textContent = 'Proyectos' + (S.estados.size ? ' · '+[...S.estados].map(k=>EL[k]||k).join(', ') : '');
-    $('#t-sub').textContent = `${fmtN(s.length)} proyectos${S.comuna?' en '+S.comuna:''} · ordenados por ${S.sort.k==='inv'?'inversión':COLS.find(c=>c[0]===S.sort.k)?.[1]?.toLowerCase()||'fecha'}.`;
+    $('#t-sub').textContent = `${fmtN(s.length)} proyectos${tfOn?' (con los filtros de la tabla)':''}${S.comuna?' en '+S.comuna:''} · MMU$ ${fmtI(tot)} en total · ordenados por ${S.sort.k==='inv'?'inversión':COLS.find(c=>c[0]===S.sort.k)?.[1]?.toLowerCase()||'fecha'}.`;
     const p=$('#pager'); p.innerHTML = `<span>Página ${S.page+1} de ${pages}</span><button type="button" id="pg-p" ${S.page===0?'disabled':''} aria-label="Página anterior">‹</button><button type="button" id="pg-n" ${S.page>=pages-1?'disabled':''} aria-label="Página siguiente">›</button>`;
-    $('#pg-p').addEventListener('click',()=>{S.page--;renderTable(CUR);}); $('#pg-n').addEventListener('click',()=>{S.page++;renderTable(CUR);});
+    $('#pg-p').addEventListener('click',()=>{S.page--;renderTable();}); $('#pg-n').addEventListener('click',()=>{S.page++;renderTable();});
   }
 
   /* ---------- descargas ---------- */
@@ -1851,11 +2031,11 @@ function init(DATA, CHILE, META, COM){
     return ws;
   }
   const dt = s => s ? new Date(s+'T12:00:00') : null;
-  async function exportExcel(){
+  async function exportExcel(fromTable){
     if(typeof ExcelJS==='undefined'){ toast('No se pudo cargar la librería de Excel. Revisa tu conexión.'); return; }
     toast('Preparando Excel…');
     try{
-      const rows = sorted(CUR), wb = new ExcelJS.Workbook(); wb.creator='Análisis SEIA'; wb.created=new Date();
+      const rows = sorted(fromTable?tableRows():CUR), wb = new ExcelJS.Workbook(); wb.creator='Análisis SEIA'; wb.created=new Date();
       const mn = S.mode==='C'?'Calificados':'Presentados', per = S.yFrom===S.yTo?''+S.yFrom:S.yFrom+'–'+S.yTo;
       const inv = rows.reduce((a,r)=>a+r.inv,0), cntE = k=>rows.filter(r=>r.e===k).length;
       const ws = wb.addWorksheet('Resumen'); ws.columns=[{width:34},{width:60}];
@@ -1866,7 +2046,7 @@ function init(DATA, CHILE, META, COM){
       let rr=4; ws.getCell('A'+rr).value='Indicador'; ws.getCell('B'+rr).value='Valor'; styleHead(ws,ws.getRow(rr)); rr++;
       kv.forEach(k=>{ ws.getCell('A'+rr).value=k[0]; ws.getCell('B'+rr).value=k[1]; ws.getCell('A'+rr).font={name:'Arial',size:10}; ws.getCell('B'+rr).font={name:'Arial',size:10,bold:true}; ws.getCell('B'+rr).alignment={horizontal:'right'}; if(k[0].startsWith('Tasa')) ws.getCell('B'+rr).numFmt='0.0%'; else if(k[0].startsWith('Inversión')) ws.getCell('B'+rr).numFmt='#,##0.0'; else ws.getCell('B'+rr).numFmt='#,##0'; rr++; });
       rr++; ws.getCell('A'+rr).value='Filtros aplicados'; ws.getCell('A'+rr).font={name:'Arial',bold:true,size:11,color:{argb:'FF003D6B'}}; rr++;
-      [['Vista',mn+(S.mode==='C'?' (por fecha de calificación)':' (por fecha de presentación)')],['Región',regFull(S.region)],['Período',per+(S.month?' · '+MES_L[S.month-1]:'')],['Estados',S.estados.size?[...S.estados].map(k=>EL[k]).join(', '):'Todos'],['Sectores',S.sectores.size?[...S.sectores].join(', '):'Todos'],['Comuna',S.comuna||'Todas'],['Tipo',S.tipo==='all'?'DIA y EIA':S.tipo],['Inversión mínima',S.invMin?'MMU$ '+S.invMin:'Sin mínimo'],['Búsqueda',S.q||'—'],['Fuente','Servicio de Evaluación Ambiental (SEA), e-SEIA, descarga del '+fmtD(CORTE)],['Unidad','MMU$ = millones de dólares declarados por el titular']].forEach(k=>{ ws.getCell('A'+rr).value=k[0]; ws.getCell('B'+rr).value=k[1]; ws.getCell('A'+rr).font={name:'Arial',size:10,color:{argb:'FF46586B'}}; ws.getCell('B'+rr).font={name:'Arial',size:10}; ws.getCell('B'+rr).alignment={wrapText:true,vertical:'top'}; rr++; });
+      [['Vista',mn+(S.mode==='C'?' (por fecha de calificación)':' (por fecha de presentación)')],['Región',regFull(S.region)],['Período',per+(S.month?' · '+MES_L[S.month-1]:'')],['Estados',S.estados.size?[...S.estados].map(k=>EL[k]).join(', '):'Todos'],['Sectores',S.sectores.size?[...S.sectores].join(', '):'Todos'],['Comuna',S.comuna||'Todas'],['Tipo',S.tipo==='all'?'DIA y EIA':S.tipo],['Inversión mínima',S.invMin?'MMU$ '+S.invMin:'Sin mínimo'],['Búsqueda',S.q||'—'],['Filtros solo de la tabla',fromTable?([TF.q&&'texto: '+TF.q,TF.sec&&'sector: '+TF.sec,TF.est&&'estado: '+(EL[TF.est]||TF.est),TF.com&&'comuna: '+TF.com].filter(Boolean).join(' · ')||'Ninguno'):'No aplica (exporta toda la vista)'],['Fuente','Servicio de Evaluación Ambiental (SEA), e-SEIA, descarga del '+fmtD(CORTE)],['Unidad','MMU$ = millones de dólares declarados por el titular']].forEach(k=>{ ws.getCell('A'+rr).value=k[0]; ws.getCell('B'+rr).value=k[1]; ws.getCell('A'+rr).font={name:'Arial',size:10,color:{argb:'FF46586B'}}; ws.getCell('B'+rr).font={name:'Arial',size:10}; ws.getCell('B'+rr).alignment={wrapText:true,vertical:'top'}; rr++; });
 
       const ps = addSheet(wb,'Proyectos',['N°','Proyecto','Tipo','Región','Provincia','Comuna','Titular','Sector productivo','Estado','Inversión (MMU$)','Fecha presentación','Fecha calificación','Días presentación a calificación','Latitud (validada)','Longitud (validada)','Calidad de la ubicación','Latitud informada al SEIA','Longitud informada al SEIA','Ficha SEIA'],
         rows.map((r,i)=>[i+1,r.n,r.t,regFull(r.r),r.pv,r.c,r.ti,r.s,EL[r.e]||r.e,r.inv,dt(r.fp),dt(r.fc),(r.dias!=null&&r.dias>=0)?r.dias:null,r.la,r.lo,QTXT[r.q||0],(r.o?r.o[0]:r.la),(r.o?r.o[1]:r.lo),{text:'Ver ficha',hyperlink:URLF(r.id)}]),

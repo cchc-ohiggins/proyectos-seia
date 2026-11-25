@@ -1,0 +1,2048 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proyectos SEIA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Composición: portada azul con selector de modo (Calificados / Presentados), barra de filtros fija,
+   tablero de tarjetas, mapa a todo el ancho y tabla de proyectos al final. Tema claro. */
+:root{
+  --navy:#003D6B; --blue:#006EDC; --orange:#E74100; --gray:#D9D9D9;
+  --bg:#F2F5F9; --card:#FFFFFF; --ink:#12253A; --ink2:#46586B; --muted:#6F7F8F; --line:#E0E6ED;
+  --blue-soft:#E8F1FC; --orange-soft:#FDEBE3; --navy-soft:#E3ECF4;
+  --f-display:'Archivo','Arial Narrow',Arial,sans-serif;
+  --f-body:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#fff;z-index:1200}
+button,select,input{font:inherit;color:inherit}
+a{color:var(--blue)}
+.wrap{max-width:1380px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.num{font-variant-numeric:tabular-nums}
+
+/* Portada */
+.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(118deg,var(--navy) 0%,#00538F 52%,var(--blue) 100%);
+  margin-top:calc(-1*env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 30px);padding-bottom:28px}
+.hero-art{position:absolute;right:-60px;top:-40px;width:760px;max-width:80%;height:auto;opacity:.5;pointer-events:none}
+.hero .wrap{position:relative}
+.eyebrow{margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#BFD9F5;font-weight:600}
+.hero h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.6vw,46px);line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+.hero h1 span{color:#FFB38F}
+.hero .lede{margin:10px 0 0;max-width:62ch;color:#D6E6F8;font-size:15px}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px;max-width:760px}
+.mode{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.10);border:1.5px solid rgba(255,255,255,.28);transition:background .15s,border-color .15s}
+.mode:hover{background:rgba(255,255,255,.18)}
+.mode:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.mode .m-t{font-family:var(--f-display);font-weight:700;font-size:20px}
+.mode .m-n{font-size:13px;color:#D6E6F8}
+.mode .m-n b{color:#fff;font-size:15px}
+.mode[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--navy)}
+.mode[aria-pressed="true"] .m-n{color:var(--ink2)}
+.mode[aria-pressed="true"] .m-n b{color:var(--orange)}
+
+/* Barra de filtros */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:1100;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 4px 14px rgba(0,61,107,.07)}
+.bar-in{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px 12px;padding-block:12px;align-items:end}
+.f{display:flex;flex-direction:column;gap:3px;min-width:0}
+.f label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.f select,.f input{height:36px;border:1px solid #C9D3DE;border-radius:8px;padding:0 10px;background:#fff;width:100%;min-width:0}
+.f select:focus,.f input:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.f-reg{grid-column:span 3}.f-y{grid-column:span 1}.f-m{grid-column:span 1}.f-t{grid-column:span 1}.f-i{grid-column:span 2}.f-q{grid-column:span 3}
+.f-y,.f-m,.f-t{min-width:70px}
+.acts{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{height:36px;border-radius:8px;border:1px solid #C9D3DE;background:#fff;padding:0 14px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn:hover{background:var(--blue-soft);border-color:var(--blue)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn.pri{background:var(--orange);border-color:var(--orange);color:#fff}
+.btn.pri:hover{background:#C93800;border-color:#C93800}
+.btn.sec{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.sec:hover{background:#00315A}
+.btn svg{width:16px;height:16px;flex:none}
+.acts .sp{flex:1}
+.sumline{font-size:12.5px;color:var(--ink2)}
+.sumline b{color:var(--ink)}
+
+/* Chips de estado */
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-block:14px 2px}
+.chips .lab{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #CBD5E0;background:#fff;border-radius:999px;height:32px;padding:0 12px 0 10px;cursor:pointer;font-weight:500}
+.chip i{width:10px;height:10px;border-radius:50%;flex:none}
+.chip b{font-variant-numeric:tabular-nums;color:var(--ink2);font-weight:600}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip[aria-pressed="true"] b{color:#fff}
+.chip:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.chip.x{border-style:dashed;color:var(--ink2)}
+
+/* Tablero */
+main{padding-block:14px 40px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.kpi .k-l{font-size:11.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi .k-v{font-family:var(--f-display);font-weight:800;font-size:30px;line-height:1.1;margin-top:4px;color:var(--navy);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.kpi .k-v small{font-size:14px;font-weight:600;color:var(--ink2);margin-left:3px}
+.kpi .k-s{font-size:12.5px;color:var(--ink2);margin-top:3px;overflow-wrap:anywhere}
+.kpi.hl{background:var(--blue-soft);border-color:#C7DDF6}
+.kpi.or .k-v{color:var(--orange)}
+.sec-h{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end;justify-content:space-between;margin:30px 0 10px}
+.sec-h h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:-.005em}
+.sec-h p{margin:2px 0 0;color:var(--ink2);font-size:13px}
+.seg{display:inline-flex;border:1px solid #C9D3DE;border-radius:8px;overflow:hidden;background:#fff}
+.seg button{border:0;background:#fff;height:34px;padding:0 14px;cursor:pointer;font-weight:600;color:var(--ink2)}
+.seg button+button{border-left:1px solid #C9D3DE}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.card h3{margin:0 0 2px;font-family:var(--f-display);font-weight:700;font-size:16px}
+.card .cap{margin:0 0 10px;font-size:12.5px;color:var(--ink2)}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.cbox{position:relative;width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.empty{padding:28px 8px;text-align:center;color:var(--muted)}
+
+/* Calendario año x mes */
+.heat{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;font-variant-numeric:tabular-nums}
+.heat th{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:2px 0}
+.heat td{height:34px;border-radius:5px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;background:#F1F4F8;color:var(--muted)}
+.heat td:hover{outline:2px solid var(--orange)}
+.heat td.sel{outline:2px solid var(--navy)}
+.heat th.yr{width:46px;text-align:left;color:var(--ink2);font-size:12px}
+
+/* Estado: donut + lista */
+.donut-wrap{display:grid;grid-template-columns:minmax(150px,200px) 1fr;gap:14px;align-items:center}
+.donut-c{position:relative;aspect-ratio:1;max-width:200px;width:100%}
+.donut-c .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center}
+.donut-c .mid b{font-family:var(--f-display);font-size:26px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.donut-c .mid span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.elist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.elist button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;width:100%;padding:6px 8px;border-radius:7px;font-size:13px}
+.elist button:hover{background:var(--blue-soft)}
+.elist button:focus-visible{outline:2px solid var(--blue)}
+.elist button[aria-pressed="true"]{background:var(--navy-soft);box-shadow:inset 0 0 0 1.5px var(--navy)}
+.elist i{width:10px;height:10px;border-radius:50%}
+.elist .v{font-weight:700;font-variant-numeric:tabular-nums}
+.elist .p{color:var(--muted);font-variant-numeric:tabular-nums;min-width:46px;text-align:right}
+
+/* Titulares */
+.tlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.tlist li{display:grid;grid-template-columns:1fr auto;gap:2px 10px}
+.tlist .t-n{font-weight:600;overflow-wrap:anywhere}
+.tlist .t-v{font-weight:700;font-variant-numeric:tabular-nums;color:var(--navy)}
+.tlist .t-b{grid-column:1/-1;height:5px;border-radius:3px;background:#EAEFF5;overflow:hidden}
+.tlist .t-b i{display:block;height:100%;background:var(--blue);border-radius:3px}
+.tlist .t-s{grid-column:1/-1;font-size:12px;color:var(--muted)}
+
+/* Mapa */
+.mapbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end;margin-bottom:10px}
+.mapbar .f{min-width:130px}
+.mapbar .f select{height:34px}
+#map{height:580px;border-radius:10px;border:1px solid var(--line);background:#DCE8F3;z-index:0}
+.leaflet-popup-content{font-family:var(--f-body);font-size:13px;line-height:1.4;margin:12px 14px}
+.pop h4{margin:0 0 4px;font-size:14px;font-family:var(--f-display);line-height:1.25}
+.pop .r{display:flex;justify-content:space-between;gap:12px;padding:2px 0;border-top:1px solid #EEF1F5}
+.pop .r span:first-child{color:var(--muted)}
+.pop .b{display:inline-block;padding:1px 8px;border-radius:999px;font-weight:600;font-size:12px}
+.pop a.lnk,.pop button{display:inline-block;margin-top:8px;margin-right:6px;font-weight:600}
+.pop button{border:1px solid var(--orange);background:var(--orange);color:#fff;border-radius:7px;padding:5px 10px;cursor:pointer}
+.pop button.o{background:#fff;color:var(--navy);border-color:#C9D3DE}
+.rb{background:var(--blue);color:#fff;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;box-shadow:0 2px 8px rgba(0,61,107,.35);font-variant-numeric:tabular-nums}
+.rb.on{background:var(--orange)}
+.maplegend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:10px;font-size:12.5px;color:var(--ink2)}
+.maplegend span{display:inline-flex;align-items:center;gap:6px}
+.maplegend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 0 1px #9AA8B7}
+
+/* Tabla */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+table.tbl{width:100%;border-collapse:collapse;min-width:980px}
+.tbl th{position:sticky;top:0;background:var(--navy);color:#fff;text-align:left;font-size:12px;font-weight:600;padding:10px 12px;white-space:nowrap;cursor:pointer;user-select:none}
+.tbl th:hover{background:#00315A}
+.tbl th.r,.tbl td.r{text-align:right}
+.tbl td{padding:9px 12px;border-top:1px solid #EEF1F5;vertical-align:top}
+.tbl tbody tr:hover{background:#F6F9FC}
+.tbl .pn{font-weight:600;min-width:260px;overflow-wrap:anywhere}
+.tbl .tag{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;padding:0 6px;border-radius:4px;background:var(--navy-soft);color:var(--navy);vertical-align:1px}
+.tbl .tag.eia{background:var(--orange-soft);color:#B63400}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-weight:600;font-size:12px;white-space:nowrap}
+.tbl td.ti{min-width:180px;overflow-wrap:anywhere}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.pager button{height:32px;min-width:34px;border:1px solid #C9D3DE;background:#fff;border-radius:7px;cursor:pointer;font-weight:600}
+.pager button:disabled{opacity:.4;cursor:default}
+.pager button:not(:disabled):hover{background:var(--blue-soft)}
+
+/* Notas */
+.notes{margin-top:34px;padding:18px 20px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--ink2);font-size:13px}
+.notes h2{margin:0 0 8px;font-family:var(--f-display);font-size:17px;color:var(--ink)}
+.notes ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+footer{padding:18px 0 28px;color:var(--muted);font-size:12.5px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:9px;z-index:3000;font-weight:600;max-width:90vw}
+.loading{position:fixed;inset:0;background:var(--bg);z-index:2500;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:700;font-size:18px;color:var(--navy)}
+
+@media (max-width:1100px){
+  .f-reg{grid-column:span 4}.f-q{grid-column:span 4}.f-i{grid-column:span 4}.f-y,.f-m,.f-t{grid-column:span 2}
+  .c4,.c5,.c6,.c7,.c8{grid-column:span 12}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){ .bar{position:static} }
+@media (max-width:640px){
+  .f-reg,.f-q,.f-i{grid-column:span 12}.f-y,.f-m,.f-t{grid-column:span 4}
+  .modes{grid-template-columns:1fr}
+  .donut-wrap{grid-template-columns:1fr}.donut-c{margin:0 auto}
+  #map{height:440px}
+  .kpi .k-v{font-size:25px}
+  .hero-art{opacity:.3}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ---- Mapa profesional, navegación a la tabla ---- */
+#map{height:640px;background:#D5E3F0}
+.mapttl{background:rgba(255,255,255,.96);border:1px solid #CBD5E0;border-radius:10px;padding:10px 13px;box-shadow:0 2px 12px rgba(0,61,107,.18);width:min(270px,60vw);font-size:12.5px;color:var(--ink2);line-height:1.4}
+.mapttl b{font-family:var(--f-display);color:var(--navy)}
+.mapttl #mt-t{display:block;font-size:16px;font-weight:800;line-height:1.2}
+.mapttl #mt-s{margin-top:2px}
+.mapttl .h{margin-top:7px;padding-top:7px;border-top:1px solid #E3E9F0;min-height:34px;color:var(--ink)}
+.leaflet-tooltip.ct{border:1px solid #CBD5E0;border-radius:8px;box-shadow:0 2px 10px rgba(0,61,107,.2);font:500 12.5px/1.4 var(--f-body);color:var(--ink);padding:6px 10px}
+.clabel,.rlabel{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;text-align:center;pointer-events:none;line-height:1.15}
+.clabel{font:600 10.5px/1.15 var(--f-body);color:#23405C;text-shadow:0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 3px #fff}
+.clabel em{display:block;font-style:normal;font-weight:800;color:var(--orange);font-size:11px}
+.clabel.dk{color:#fff;text-shadow:0 0 3px #003D6B,0 0 3px #003D6B,0 0 4px #003D6B}
+.clabel.dk em{color:#FFD0B5}
+.rlabel{font:800 12px/1.1 var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:#4E6A86;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 4px #fff}
+.kpi.click{cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.kpi.click:hover{border-color:var(--blue);box-shadow:0 4px 14px rgba(0,110,220,.16);transform:translateY(-1px)}
+.kpi.click:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.kpi.click[aria-pressed="true"]{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy)}
+.kpi .go{margin-top:6px;font-size:12px;font-weight:600;color:var(--blue)}
+#sec-tabla,#chips{scroll-margin-top:140px}
+.tscroll.flash{animation:flashT 1.6s ease-out}
+@keyframes flashT{0%{box-shadow:0 0 0 0 rgba(231,65,0,0)}15%{box-shadow:0 0 0 6px rgba(231,65,0,.30)}100%{box-shadow:0 0 0 0 rgba(231,65,0,0)}}
+@media (max-width:900px){#sec-tabla,#chips{scroll-margin-top:12px}}
+@media (max-width:640px){#map{height:520px}.mapttl{width:min(220px,62vw);padding:8px 10px}.mapttl #mt-t{font-size:14px}}
+
+/* ================= Capa de diseño 2 ================= */
+:root{--bg:#EDF2F8;--f-display:'Bricolage Grotesque','Archivo',Arial,sans-serif;
+  --sh:0 1px 2px rgba(0,61,107,.06),0 10px 28px -10px rgba(0,61,107,.18);--sh2:0 2px 4px rgba(0,61,107,.07),0 18px 36px -12px rgba(0,61,107,.28)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(900px 520px at 104% 14%,rgba(231,65,0,.075),transparent 62%),radial-gradient(760px 600px at -8% 58%,rgba(0,110,220,.09),transparent 62%),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22520%22 height=%22520%22 viewBox=%220 0 520 520%22 fill=%22none%22 stroke=%22%23003D6B%22 stroke-opacity=%220.075%22 stroke-width=%221.2%22%3E%3Cpath d=%22M0,26 C173,10 347,42 520,26%22/%3E%3Cpath d=%22M0,52 C173,62 347,42 520,52%22/%3E%3Cpath d=%22M0,78 C173,101 347,55 520,78%22/%3E%3Cpath d=%22M0,130 C173,100 347,160 520,130%22/%3E%3Cpath d=%22M0,182 C173,219 347,145 520,182%22/%3E%3Cpath d=%22M0,208 C173,197 347,219 520,208%22/%3E%3Cpath d=%22M0,234 C173,214 347,254 520,234%22/%3E%3Cpath d=%22M0,286 C173,313 347,259 520,286%22/%3E%3Cpath d=%22M0,338 C173,304 347,372 520,338%22/%3E%3Cpath d=%22M0,364 C173,376 347,352 520,364%22/%3E%3Cpath d=%22M0,390 C173,407 347,373 520,390%22/%3E%3Cpath d=%22M0,442 C173,418 347,466 520,442%22/%3E%3Cpath d=%22M0,494 C173,525 347,463 520,494%22/%3E%3Cpath d=%22M0,520 C173,507 347,533 520,520%22/%3E%3C/svg%3E")}
+.prog{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:3px;width:0;background:linear-gradient(90deg,var(--orange),#FF8A57);z-index:1300;transition:width .1s linear}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:0;background:var(--orange);color:#fff;font-size:20px;font-weight:700;cursor:pointer;z-index:1250;box-shadow:0 10px 24px -6px rgba(231,65,0,.6);transition:transform .2s}
+.fab:hover{transform:translateY(-3px)}
+
+/* Portada */
+.hero{padding-bottom:84px;background:radial-gradient(700px 380px at 80% 8%,rgba(255,255,255,.17),transparent 62%),radial-gradient(520px 340px at 6% 112%,rgba(231,65,0,.34),transparent 66%),linear-gradient(125deg,#002E55 0%,#004A84 46%,#006EDC 100%)}
+.hero::before{content:"";position:absolute;inset:-60px 0;background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22520%22 height=%22520%22 viewBox=%220 0 520 520%22 fill=%22none%22 stroke=%22%23FFFFFF%22 stroke-opacity=%220.16%22 stroke-width=%221.2%22%3E%3Cpath d=%22M0,26 C173,10 347,42 520,26%22/%3E%3Cpath d=%22M0,52 C173,62 347,42 520,52%22/%3E%3Cpath d=%22M0,78 C173,101 347,55 520,78%22/%3E%3Cpath d=%22M0,130 C173,100 347,160 520,130%22/%3E%3Cpath d=%22M0,182 C173,219 347,145 520,182%22/%3E%3Cpath d=%22M0,208 C173,197 347,219 520,208%22/%3E%3Cpath d=%22M0,234 C173,214 347,254 520,234%22/%3E%3Cpath d=%22M0,286 C173,313 347,259 520,286%22/%3E%3Cpath d=%22M0,338 C173,304 347,372 520,338%22/%3E%3Cpath d=%22M0,364 C173,376 347,352 520,364%22/%3E%3Cpath d=%22M0,390 C173,407 347,373 520,390%22/%3E%3Cpath d=%22M0,442 C173,418 347,466 520,442%22/%3E%3Cpath d=%22M0,494 C173,525 347,463 520,494%22/%3E%3Cpath d=%22M0,520 C173,507 347,533 520,520%22/%3E%3C/svg%3E");background-size:520px;animation:drift 90s linear infinite;pointer-events:none}
+@keyframes drift{to{background-position:520px 260px}}
+.hero-in{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:28px;align-items:center}
+.hero-txt{min-width:0}
+.hero h1{font-size:clamp(34px,5.6vw,62px);line-height:.98;letter-spacing:-.025em;font-weight:800}
+.hero h1 span{color:#FFB38F;font-style:normal}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;margin-bottom:12px}
+.eyebrow::before{content:"";width:26px;height:2px;background:#FF8A57;border-radius:2px}
+.hero-reg{display:inline-block;margin:16px 0 0;font:600 clamp(20px,2.7vw,30px)/1.1 var(--f-display);color:#fff}
+.squig{display:block;width:100%;height:12px;margin-top:3px}
+.squig path{fill:none;stroke:#FF8A57;stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
+.squig path.draw{animation:draw .9s ease-out both}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.hero .lede{margin-top:14px;font-size:15.5px}
+.hero-viz{position:relative;min-width:0}
+.hero-viz svg{display:block;width:100%;height:auto;max-height:350px;filter:drop-shadow(0 18px 30px rgba(0,18,48,.4))}
+.hero-viz .reg{fill:rgba(255,255,255,.15);stroke:#fff;stroke-opacity:.9;stroke-width:1.7;stroke-linejoin:round}
+.hero-viz .cb{fill:none;stroke:#fff;stroke-opacity:.3;stroke-width:.7;stroke-linejoin:round}
+.hero-viz svg.swap{animation:swapIn .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes swapIn{from{opacity:0;transform:scale(.93) rotate(-2deg)}to{opacity:1;transform:none}}
+.pd{fill:#FFB38F}
+.pd.p{transform-box:fill-box;transform-origin:center;animation:pulse 2.6s ease-out infinite;fill:#fff}
+@keyframes pulse{0%{transform:scale(1);opacity:1}70%,100%{transform:scale(3.6);opacity:0}}
+.hero-wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:52px;display:block}
+.modes{max-width:720px;gap:14px;margin-top:26px}
+.mode{flex-direction:row;align-items:center;gap:14px;padding:14px 18px;border-radius:18px;background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.32);transition:transform .22s,background .2s,box-shadow .2s}
+.mode:hover{transform:translateY(-3px);background:rgba(255,255,255,.2)}
+.m-ic{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:none;transition:background .2s}
+.m-ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.m-b{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mode .m-t{font-weight:800;font-size:22px;letter-spacing:-.01em}
+.mode[aria-pressed="true"]{box-shadow:0 18px 36px -12px rgba(0,16,44,.6)}
+.mode[aria-pressed="true"] .m-ic{background:var(--orange)}
+
+/* Barra */
+.bar{background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,61,107,.08)}
+.f select,.f input{border-radius:10px;border-color:#CFD8E3;transition:border-color .15s,box-shadow .15s}
+.f select:hover,.f input:hover{border-color:var(--blue)}
+.btn{border-radius:10px;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 16px -8px rgba(0,61,107,.4)}
+.chip{height:34px;box-shadow:0 1px 2px rgba(0,61,107,.08);transition:transform .15s,box-shadow .15s,background .15s}
+.chip:hover{transform:translateY(-2px);box-shadow:0 6px 14px -6px rgba(0,61,107,.4)}
+.chips .lab{color:var(--ink2)}
+
+/* Títulos de sección */
+.kick{display:inline-flex;align-items:center;gap:9px;font:700 11.5px var(--f-body);letter-spacing:.15em;text-transform:uppercase;color:var(--orange)}
+.kick::before{content:"";width:24px;height:2px;background:var(--orange);border-radius:2px}
+.sec-h{margin:44px 0 14px;align-items:end}
+.sec-h h2{font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;line-height:1.05;margin-top:4px}
+.sec-h > div:not(.seg){display:flex;flex-direction:column;align-items:flex-start}
+.sec-h p{margin-top:6px;font-size:13.5px}
+.seg{border-radius:12px;padding:3px;gap:3px;background:#fff;box-shadow:var(--sh);border:0}
+.seg button{border-radius:9px;border:0!important;transition:background .2s,color .2s}
+
+/* KPI */
+.kpis{gap:14px}
+.kpi{position:relative;overflow:hidden;border:0;border-radius:18px;padding:16px 18px 14px 22px;box-shadow:var(--sh);animation:pop .55s cubic-bezier(.2,.8,.2,1) both}
+.kpi::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:5px;border-radius:0 5px 5px 0;background:var(--ac,var(--blue))}
+.kpi .ic{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:#EAF2FC;background:color-mix(in srgb,var(--ac,#006EDC) 13%,#fff);color:var(--ac,#006EDC)}
+.kpi .ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kpi .k-l{padding-right:42px}
+.kpi .k-v{font-size:34px;letter-spacing:-.02em}
+.kpi.hl{background:linear-gradient(135deg,#E3EEFC,#fff 80%)}
+.kpi.click:hover{box-shadow:var(--sh2);transform:translateY(-3px)}
+.kpi.click[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ac,var(--navy)),var(--sh2)}
+.kpi .go{opacity:.0;transform:translateY(4px);transition:opacity .2s,transform .2s;color:var(--ac,var(--blue))}
+.kpi.click:hover .go,.kpi.click:focus-visible .go,.kpi.click[aria-pressed="true"] .go{opacity:1;transform:none}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.kpis .kpi:nth-child(1){animation-delay:0ms}.kpis .kpi:nth-child(2){animation-delay:45ms}.kpis .kpi:nth-child(3){animation-delay:90ms}.kpis .kpi:nth-child(4){animation-delay:135ms}.kpis .kpi:nth-child(5){animation-delay:180ms}.kpis .kpi:nth-child(6){animation-delay:225ms}.kpis .kpi:nth-child(7){animation-delay:270ms}.kpis .kpi:nth-child(8){animation-delay:315ms}
+.insights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.ins{position:relative;display:flex;gap:12px;align-items:flex-start;padding:16px 16px 15px;border-radius:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 10%,#fff),#fff 72%);border:1px solid color-mix(in srgb,var(--ac) 24%,#fff);animation:pop .6s cubic-bezier(.2,.8,.2,1) both}
+.ins:nth-child(2){animation-delay:70ms}.ins:nth-child(3){animation-delay:140ms}.ins:nth-child(4){animation-delay:210ms}
+.ins .ic{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--ac);color:#fff}
+.ins .ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ins p{margin:0;font-size:14.5px;line-height:1.35;color:var(--ink);text-wrap:pretty}
+.ins p b{font-family:var(--f-display);font-weight:800;color:var(--ac)}
+.ins small{display:block;margin-top:5px;color:var(--ink2);font-size:12.5px}
+
+/* Tarjetas */
+.grid{gap:14px}
+.card{border:0;border-radius:18px;padding:18px 20px;box-shadow:var(--sh);transition:box-shadow .25s,transform .25s}
+.card:hover{box-shadow:var(--sh2)}
+.card h3{display:flex;align-items:center;gap:9px;font-size:17px;letter-spacing:-.01em}
+.card h3::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--orange);transform:rotate(45deg);flex:none}
+.heat td{border-radius:8px;transition:transform .12s}
+.heat td:hover{transform:scale(1.12);outline:none;box-shadow:0 0 0 2px var(--orange);position:relative;z-index:1}
+.elist button{transition:background .15s,transform .15s}.elist button:hover{transform:translateX(3px)}
+.tlist .t-b i{background:linear-gradient(90deg,var(--blue),#4C9BF0)}
+#map{border-radius:14px;border:0;box-shadow:inset 0 0 0 1px var(--line)}
+.mapttl{border-radius:14px;border:0}
+
+/* Tabla */
+.tscroll{border:0;border-radius:18px;box-shadow:var(--sh)}
+.tbl th{padding:13px 14px;background:linear-gradient(#004577,#003D6B)}
+.tbl td{padding:11px 14px}
+.tbl tbody tr{transition:background .12s}
+.tbl tbody tr:hover{background:#EAF3FE}
+.tbl td a{font-weight:700;text-decoration:none;white-space:nowrap}
+.tbl td a:hover{text-decoration:underline}
+.pager button{border-radius:10px}
+.notes{border:0;border-radius:18px;box-shadow:var(--sh);padding:22px 26px}
+.notes h2{font-size:20px}
+
+/* Pie */
+.foot{position:relative;margin-top:46px;padding:62px 0 34px;background:linear-gradient(180deg,#003D6B,#002C50);color:#B7CCE2;font-size:13px}
+.foot svg{position:absolute;left:0;right:0;top:-1px;width:100%;height:40px;display:block}
+.foot b{color:#fff;font-family:var(--f-display);font-size:17px;letter-spacing:-.01em}
+.foot p{margin:6px 0 0;max-width:80ch}
+.foot .dots{display:flex;gap:6px;margin-bottom:12px}
+.foot .dots i{width:9px;height:9px;border-radius:50%;background:var(--orange)}.foot .dots i:nth-child(2){background:var(--blue)}.foot .dots i:nth-child(3){background:var(--gray)}
+.loading{background:linear-gradient(135deg,#002E55,#006EDC);color:#fff}
+.loading::after{content:"";width:10px;height:10px;border-radius:50%;background:#FF8A57;margin-left:12px;animation:pulse 1.2s ease-out infinite}
+
+/* Aparición al desplazar */
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (max-width:1100px){.insights{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-in{grid-template-columns:minmax(0,1fr) minmax(0,.7fr)}}
+@media (max-width:760px){
+  .hero-in{grid-template-columns:1fr}
+  .hero-viz{position:absolute;right:-14%;top:6px;width:62%;opacity:.28;pointer-events:none}
+  .hero{padding-bottom:70px}
+  .insights{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.hero::before,.pd.p,.kpi,.ins,.squig path.draw{animation:none!important}.js .rv{opacity:1;transform:none}}
+.ms{display:none}.kpi .k-v small{white-space:nowrap}
+@media (max-width:640px){.ml{display:none}.ms{display:inline}.kpi .k-v{font-size:27px}.heat th.yr{width:38px}}
+
+/* ================= Capa de diseño 3: sobria y corporativa ================= */
+/* Criterio: el texto va en azul marino y azul; el naranja queda para líneas, botones y puntos, no para letras. */
+.topnav{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:4px 10px}
+.topnav .logo{display:inline-flex;align-items:center;gap:10px;font:700 18px var(--f-display);letter-spacing:-.01em;color:#fff}
+.mk{position:relative;width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55)}
+.mk::before{content:"";position:absolute;inset:6px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(255,255,255,.8)}
+.mk::after{content:"";position:absolute;left:12px;top:12px;width:6px;height:6px;border-radius:50%;background:#FF8A57}
+.topnav .links{display:flex;gap:2px;flex-wrap:wrap}
+.topnav a{color:#DCEBFA;text-decoration:none;font-weight:500;font-size:13.5px;padding:8px 13px;border-radius:999px;transition:background .15s,color .15s}
+.topnav a:hover{background:rgba(255,255,255,.14);color:#fff}
+.hero{padding-top:calc(env(safe-area-inset-top,0px) + 14px);padding-bottom:92px}
+.hero-in{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:36px}
+.hero h1{font-weight:700;letter-spacing:-.032em;font-size:clamp(34px,5.2vw,58px)}
+.hero h1 span{color:#A6D0FF}
+.eyebrow{color:#C9DDF3;font-weight:600}
+.hero-reg{font-weight:600}
+.hero .lede{color:#D3E3F6;font-size:16px;line-height:1.55}
+.hero-viz{margin-top:-18px;margin-right:-10px}
+.hero-viz::before{content:"";position:absolute;inset:4% 2% 8% 2%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.2),rgba(255,255,255,0));pointer-events:none}
+.hero-viz svg{position:relative;max-height:470px;filter:drop-shadow(0 22px 34px rgba(0,16,44,.45))}
+.hero-viz .reg{fill:rgba(255,255,255,.17);stroke-width:2}
+.viz-card{position:absolute;right:2%;bottom:34px;display:flex;flex-direction:column;gap:1px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;box-shadow:0 14px 30px -14px rgba(0,16,44,.6)}
+.viz-card b{font:700 30px/1 var(--f-display);letter-spacing:-.02em}
+.viz-card span{font-size:12.5px;color:#D3E3F6}
+.viz-card em{font-style:normal;font-weight:600;font-size:13px;color:#fff;margin-top:4px}
+.viz-cap{position:relative;margin:4px 0 0;text-align:left;font-size:12px;color:#BCD4EE}
+.mode .m-n{color:#D3E3F6}
+.mode[aria-pressed="true"] .m-n b{color:var(--blue)}
+.mode .m-t{font-weight:700}
+.kick{color:var(--blue)}
+.kpi .k-v{font-weight:700}
+.kpi.or .k-v{color:var(--navy)}
+.sec-h h2{font-weight:700}
+.card h3{font-weight:600}
+.card,.kpi,.ins,.tscroll,.notes{border:1px solid rgba(0,61,107,.07)}
+.card,.kpi,.tscroll,.notes{box-shadow:0 1px 2px rgba(0,61,107,.05),0 14px 30px -16px rgba(0,61,107,.24)}
+.ins p b{color:var(--navy);font-weight:700}
+.clabel em{color:var(--blue)}
+.tbl .tag{background:#E3EEFB;color:#004A84}
+.tbl .tag.eia{background:var(--navy);color:#fff}
+.heat td:hover{box-shadow:0 0 0 2px var(--blue)}
+#sec-tabla,#chips,#a-tiempo,#a-sector,#a-mapa,#a-notas{scroll-margin-top:150px}
+@media (max-width:900px){#a-tiempo,#a-sector,#a-mapa,#a-notas{scroll-margin-top:14px}}
+@media (max-width:1100px){.hero-in{grid-template-columns:minmax(0,1fr) minmax(0,.9fr)}}
+@media (max-width:760px){.hero-in{grid-template-columns:1fr}.hero-viz{position:absolute;right:-14%;top:60px;width:62%;opacity:.3}.topnav .links{display:none}.viz-card,.viz-cap{display:none}}
+.pop .qn{margin-top:8px;padding:6px 8px;border-left:3px solid #003D6B;background:#F3F7FB;color:#003D6B;font-size:12px;line-height:1.4;border-radius:2px}
+/* required styles */
+ 
+ .leaflet-pane,
+ .leaflet-tile,
+ .leaflet-marker-icon,
+ .leaflet-marker-shadow,
+ .leaflet-tile-container,
+ .leaflet-pane > svg,
+ .leaflet-pane > canvas,
+ .leaflet-zoom-box,
+ .leaflet-image-layer,
+ .leaflet-layer {
+ 	position: absolute;
+ 	left: 0;
+ 	top: 0;
+ 	}
+ .leaflet-container {
+ 	overflow: hidden;
+ 	}
+ .leaflet-tile,
+ .leaflet-marker-icon,
+ .leaflet-marker-shadow {
+ 	-webkit-user-select: none;
+ 	 -moz-user-select: none;
+ 	 user-select: none;
+ 	 -webkit-user-drag: none;
+ 	}
+ /* Prevents IE11 from highlighting tiles in blue */
+ .leaflet-tile::selection {
+ 	background: transparent;
+ }
+ /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+ .leaflet-safari .leaflet-tile {
+ 	image-rendering: -webkit-optimize-contrast;
+ 	}
+ /* hack that prevents hw layers "stretching" when loading new tiles */
+ .leaflet-safari .leaflet-tile-container {
+ 	width: 1600px;
+ 	height: 1600px;
+ 	-webkit-transform-origin: 0 0;
+ 	}
+ .leaflet-marker-icon,
+ .leaflet-marker-shadow {
+ 	display: block;
+ 	}
+ /* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+ /* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+ .leaflet-container .leaflet-overlay-pane svg {
+ 	max-width: none !important;
+ 	max-height: none !important;
+ 	}
+ .leaflet-container .leaflet-marker-pane img,
+ .leaflet-container .leaflet-shadow-pane img,
+ .leaflet-container .leaflet-tile-pane img,
+ .leaflet-container img.leaflet-image-layer,
+ .leaflet-container .leaflet-tile {
+ 	max-width: none !important;
+ 	max-height: none !important;
+ 	width: auto;
+ 	padding: 0;
+ 	}
+ 
+ .leaflet-container img.leaflet-tile {
+ 	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+ 	mix-blend-mode: plus-lighter;
+ }
+ 
+ .leaflet-container.leaflet-touch-zoom {
+ 	-ms-touch-action: pan-x pan-y;
+ 	touch-action: pan-x pan-y;
+ 	}
+ .leaflet-container.leaflet-touch-drag {
+ 	-ms-touch-action: pinch-zoom;
+ 	/* Fallback for FF which doesn't support pinch-zoom */
+ 	touch-action: none;
+ 	touch-action: pinch-zoom;
+ }
+ .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+ 	-ms-touch-action: none;
+ 	touch-action: none;
+ }
+ .leaflet-container {
+ 	-webkit-tap-highlight-color: transparent;
+ }
+ .leaflet-container a {
+ 	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+ }
+ .leaflet-tile {
+ 	filter: inherit;
+ 	visibility: hidden;
+ 	}
+ .leaflet-tile-loaded {
+ 	visibility: inherit;
+ 	}
+ .leaflet-zoom-box {
+ 	width: 0;
+ 	height: 0;
+ 	-moz-box-sizing: border-box;
+ 	 box-sizing: border-box;
+ 	z-index: 800;
+ 	}
+ /* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+ .leaflet-overlay-pane svg {
+ 	-moz-user-select: none;
+ 	}
+ 
+ .leaflet-pane { z-index: 400; }
+ 
+ .leaflet-tile-pane { z-index: 200; }
+ .leaflet-overlay-pane { z-index: 400; }
+ .leaflet-shadow-pane { z-index: 500; }
+ .leaflet-marker-pane { z-index: 600; }
+ .leaflet-tooltip-pane { z-index: 650; }
+ .leaflet-popup-pane { z-index: 700; }
+ 
+ .leaflet-map-pane canvas { z-index: 100; }
+ .leaflet-map-pane svg { z-index: 200; }
+ 
+ .leaflet-vml-shape {
+ 	width: 1px;
+ 	height: 1px;
+ 	}
+ .lvml {
+ 	behavior: url(#default#VML);
+ 	display: inline-block;
+ 	position: absolute;
+ 	}
+ 
+ 
+ /* control positioning */
+ 
+ .leaflet-control {
+ 	position: relative;
+ 	z-index: 800;
+ 	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+ 	pointer-events: auto;
+ 	}
+ .leaflet-top,
+ .leaflet-bottom {
+ 	position: absolute;
+ 	z-index: 1000;
+ 	pointer-events: none;
+ 	}
+ .leaflet-top {
+ 	top: 0;
+ 	}
+ .leaflet-right {
+ 	right: 0;
+ 	}
+ .leaflet-bottom {
+ 	bottom: 0;
+ 	}
+ .leaflet-left {
+ 	left: 0;
+ 	}
+ .leaflet-control {
+ 	float: left;
+ 	clear: both;
+ 	}
+ .leaflet-right .leaflet-control {
+ 	float: right;
+ 	}
+ .leaflet-top .leaflet-control {
+ 	margin-top: 10px;
+ 	}
+ .leaflet-bottom .leaflet-control {
+ 	margin-bottom: 10px;
+ 	}
+ .leaflet-left .leaflet-control {
+ 	margin-left: 10px;
+ 	}
+ .leaflet-right .leaflet-control {
+ 	margin-right: 10px;
+ 	}
+ 
+ 
+ /* zoom and fade animations */
+ 
+ .leaflet-fade-anim .leaflet-popup {
+ 	opacity: 0;
+ 	-webkit-transition: opacity 0.2s linear;
+ 	 -moz-transition: opacity 0.2s linear;
+ 	 transition: opacity 0.2s linear;
+ 	}
+ .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+ 	opacity: 1;
+ 	}
+ .leaflet-zoom-animated {
+ 	-webkit-transform-origin: 0 0;
+ 	 -ms-transform-origin: 0 0;
+ 	 transform-origin: 0 0;
+ 	}
+ svg.leaflet-zoom-animated {
+ 	will-change: transform;
+ }
+ 
+ .leaflet-zoom-anim .leaflet-zoom-animated {
+ 	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+ 	 -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+ 	 transition: transform 0.25s cubic-bezier(0,0,0.25,1);
+ 	}
+ .leaflet-zoom-anim .leaflet-tile,
+ .leaflet-pan-anim .leaflet-tile {
+ 	-webkit-transition: none;
+ 	 -moz-transition: none;
+ 	 transition: none;
+ 	}
+ 
+ .leaflet-zoom-anim .leaflet-zoom-hide {
+ 	visibility: hidden;
+ 	}
+ 
+ 
+ /* cursors */
+ 
+ .leaflet-interactive {
+ 	cursor: pointer;
+ 	}
+ .leaflet-grab {
+ 	cursor: -webkit-grab;
+ 	cursor: -moz-grab;
+ 	cursor: grab;
+ 	}
+ .leaflet-crosshair,
+ .leaflet-crosshair .leaflet-interactive {
+ 	cursor: crosshair;
+ 	}
+ .leaflet-popup-pane,
+ .leaflet-control {
+ 	cursor: auto;
+ 	}
+ .leaflet-dragging .leaflet-grab,
+ .leaflet-dragging .leaflet-grab .leaflet-interactive,
+ .leaflet-dragging .leaflet-marker-draggable {
+ 	cursor: move;
+ 	cursor: -webkit-grabbing;
+ 	cursor: -moz-grabbing;
+ 	cursor: grabbing;
+ 	}
+ 
+ /* marker & overlays interactivity */
+ .leaflet-marker-icon,
+ .leaflet-marker-shadow,
+ .leaflet-image-layer,
+ .leaflet-pane > svg path,
+ .leaflet-tile-container {
+ 	pointer-events: none;
+ 	}
+ 
+ .leaflet-marker-icon.leaflet-interactive,
+ .leaflet-image-layer.leaflet-interactive,
+ .leaflet-pane > svg path.leaflet-interactive,
+ svg.leaflet-image-layer.leaflet-interactive path {
+ 	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+ 	pointer-events: auto;
+ 	}
+ 
+ /* visual tweaks */
+ 
+ .leaflet-container {
+ 	background: #ddd;
+ 	outline-offset: 1px;
+ 	}
+ .leaflet-container a {
+ 	color: #0078A8;
+ 	}
+ .leaflet-zoom-box {
+ 	border: 2px dotted #38f;
+ 	background: rgba(255,255,255,0.5);
+ 	}
+ 
+ 
+ /* general typography */
+ .leaflet-container {
+ 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+ 	font-size: 12px;
+ 	font-size: 0.75rem;
+ 	line-height: 1.5;
+ 	}
+ 
+ 
+ /* general toolbar styles */
+ 
+ .leaflet-bar {
+ 	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+ 	border-radius: 4px;
+ 	}
+ .leaflet-bar a {
+ 	background-color: #fff;
+ 	border-bottom: 1px solid #ccc;
+ 	width: 26px;
+ 	height: 26px;
+ 	line-height: 26px;
+ 	display: block;
+ 	text-align: center;
+ 	text-decoration: none;
+ 	color: black;
+ 	}
+ .leaflet-bar a,
+ .leaflet-control-layers-toggle {
+ 	background-position: 50% 50%;
+ 	background-repeat: no-repeat;
+ 	display: block;
+ 	}
+ .leaflet-bar a:hover,
+ .leaflet-bar a:focus {
+ 	background-color: #f4f4f4;
+ 	}
+ .leaflet-bar a:first-child {
+ 	border-top-left-radius: 4px;
+ 	border-top-right-radius: 4px;
+ 	}
+ .leaflet-bar a:last-child {
+ 	border-bottom-left-radius: 4px;
+ 	border-bottom-right-radius: 4px;
+ 	border-bottom: none;
+ 	}
+ .leaflet-bar a.leaflet-disabled {
+ 	cursor: default;
+ 	background-color: #f4f4f4;
+ 	color: #bbb;
+ 	}
+ 
+ .leaflet-touch .leaflet-bar a {
+ 	width: 30px;
+ 	height: 30px;
+ 	line-height: 30px;
+ 	}
+ .leaflet-touch .leaflet-bar a:first-child {
+ 	border-top-left-radius: 2px;
+ 	border-top-right-radius: 2px;
+ 	}
+ .leaflet-touch .leaflet-bar a:last-child {
+ 	border-bottom-left-radius: 2px;
+ 	border-bottom-right-radius: 2px;
+ 	}
+ 
+ /* zoom control */
+ 
+ .leaflet-control-zoom-in,
+ .leaflet-control-zoom-out {
+ 	font: bold 18px 'Lucida Console', Monaco, monospace;
+ 	text-indent: 1px;
+ 	}
+ 
+ .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
+ 	font-size: 22px;
+ 	}
+ 
+ 
+ /* layers control */
+ 
+ .leaflet-control-layers {
+ 	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+ 	background: #fff;
+ 	border-radius: 5px;
+ 	}
+ .leaflet-control-layers-toggle {
+ 	background-image: none;
+ 	width: 36px;
+ 	height: 36px;
+ 	}
+ .leaflet-retina .leaflet-control-layers-toggle {
+ 	background-image: none;
+ 	background-size: 26px 26px;
+ 	}
+ .leaflet-touch .leaflet-control-layers-toggle {
+ 	width: 44px;
+ 	height: 44px;
+ 	}
+ .leaflet-control-layers .leaflet-control-layers-list,
+ .leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+ 	display: none;
+ 	}
+ .leaflet-control-layers-expanded .leaflet-control-layers-list {
+ 	display: block;
+ 	position: relative;
+ 	}
+ .leaflet-control-layers-expanded {
+ 	padding: 6px 10px 6px 6px;
+ 	color: #333;
+ 	background: #fff;
+ 	}
+ .leaflet-control-layers-scrollbar {
+ 	overflow-y: scroll;
+ 	overflow-x: hidden;
+ 	padding-right: 5px;
+ 	}
+ .leaflet-control-layers-selector {
+ 	margin-top: 2px;
+ 	position: relative;
+ 	top: 1px;
+ 	}
+ .leaflet-control-layers label {
+ 	display: block;
+ 	font-size: 13px;
+ 	font-size: 1.08333em;
+ 	}
+ .leaflet-control-layers-separator {
+ 	height: 0;
+ 	border-top: 1px solid #ddd;
+ 	margin: 5px -10px 5px -6px;
+ 	}
+ 
+ /* Default icon URLs */
+ .leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+ 	background-image: none;
+ 	}
+ 
+ 
+ /* attribution and scale controls */
+ 
+ .leaflet-container .leaflet-control-attribution {
+ 	background: #fff;
+ 	background: rgba(255, 255, 255, 0.8);
+ 	margin: 0;
+ 	}
+ .leaflet-control-attribution,
+ .leaflet-control-scale-line {
+ 	padding: 0 5px;
+ 	color: #333;
+ 	line-height: 1.4;
+ 	}
+ .leaflet-control-attribution a {
+ 	text-decoration: none;
+ 	}
+ .leaflet-control-attribution a:hover,
+ .leaflet-control-attribution a:focus {
+ 	text-decoration: underline;
+ 	}
+ .leaflet-attribution-flag {
+ 	display: inline !important;
+ 	vertical-align: baseline !important;
+ 	width: 1em;
+ 	height: 0.6669em;
+ 	}
+ .leaflet-left .leaflet-control-scale {
+ 	margin-left: 5px;
+ 	}
+ .leaflet-bottom .leaflet-control-scale {
+ 	margin-bottom: 5px;
+ 	}
+ .leaflet-control-scale-line {
+ 	border: 2px solid #777;
+ 	border-top: none;
+ 	line-height: 1.1;
+ 	padding: 2px 5px 1px;
+ 	white-space: nowrap;
+ 	-moz-box-sizing: border-box;
+ 	 box-sizing: border-box;
+ 	background: rgba(255, 255, 255, 0.8);
+ 	text-shadow: 1px 1px #fff;
+ 	}
+ .leaflet-control-scale-line:not(:first-child) {
+ 	border-top: 2px solid #777;
+ 	border-bottom: none;
+ 	margin-top: -2px;
+ 	}
+ .leaflet-control-scale-line:not(:first-child):not(:last-child) {
+ 	border-bottom: 2px solid #777;
+ 	}
+ 
+ .leaflet-touch .leaflet-control-attribution,
+ .leaflet-touch .leaflet-control-layers,
+ .leaflet-touch .leaflet-bar {
+ 	box-shadow: none;
+ 	}
+ .leaflet-touch .leaflet-control-layers,
+ .leaflet-touch .leaflet-bar {
+ 	border: 2px solid rgba(0,0,0,0.2);
+ 	background-clip: padding-box;
+ 	}
+ 
+ 
+ /* popup */
+ 
+ .leaflet-popup {
+ 	position: absolute;
+ 	text-align: center;
+ 	margin-bottom: 20px;
+ 	}
+ .leaflet-popup-content-wrapper {
+ 	padding: 1px;
+ 	text-align: left;
+ 	border-radius: 12px;
+ 	}
+ .leaflet-popup-content {
+ 	margin: 13px 24px 13px 20px;
+ 	line-height: 1.3;
+ 	font-size: 13px;
+ 	font-size: 1.08333em;
+ 	min-height: 1px;
+ 	}
+ .leaflet-popup-content p {
+ 	margin: 17px 0;
+ 	margin: 1.3em 0;
+ 	}
+ .leaflet-popup-tip-container {
+ 	width: 40px;
+ 	height: 20px;
+ 	position: absolute;
+ 	left: 50%;
+ 	margin-top: -1px;
+ 	margin-left: -20px;
+ 	overflow: hidden;
+ 	pointer-events: none;
+ 	}
+ .leaflet-popup-tip {
+ 	width: 17px;
+ 	height: 17px;
+ 	padding: 1px;
+ 
+ 	margin: -10px auto 0;
+ 	pointer-events: auto;
+ 
+ 	-webkit-transform: rotate(45deg);
+ 	 -moz-transform: rotate(45deg);
+ 	 -ms-transform: rotate(45deg);
+ 	 transform: rotate(45deg);
+ 	}
+ .leaflet-popup-content-wrapper,
+ .leaflet-popup-tip {
+ 	background: white;
+ 	color: #333;
+ 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+ 	}
+ .leaflet-container a.leaflet-popup-close-button {
+ 	position: absolute;
+ 	top: 0;
+ 	right: 0;
+ 	border: none;
+ 	text-align: center;
+ 	width: 24px;
+ 	height: 24px;
+ 	font: 16px/24px Tahoma, Verdana, sans-serif;
+ 	color: #757575;
+ 	text-decoration: none;
+ 	background: transparent;
+ 	}
+ .leaflet-container a.leaflet-popup-close-button:hover,
+ .leaflet-container a.leaflet-popup-close-button:focus {
+ 	color: #585858;
+ 	}
+ .leaflet-popup-scrolled {
+ 	overflow: auto;
+ 	}
+ 
+ .leaflet-oldie .leaflet-popup-content-wrapper {
+ 	-ms-zoom: 1;
+ 	}
+ .leaflet-oldie .leaflet-popup-tip {
+ 	width: 24px;
+ 	margin: 0 auto;
+ 
+ 	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+ 	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+ 	}
+ 
+ .leaflet-oldie .leaflet-control-zoom,
+ .leaflet-oldie .leaflet-control-layers,
+ .leaflet-oldie .leaflet-popup-content-wrapper,
+ .leaflet-oldie .leaflet-popup-tip {
+ 	border: 1px solid #999;
+ 	}
+ 
+ 
+ /* div icon */
+ 
+ .leaflet-div-icon {
+ 	background: #fff;
+ 	border: 1px solid #666;
+ 	}
+ 
+ 
+ /* Tooltip */
+ /* Base styles for the element that has a tooltip */
+ .leaflet-tooltip {
+ 	position: absolute;
+ 	padding: 6px;
+ 	background-color: #fff;
+ 	border: 1px solid #fff;
+ 	border-radius: 3px;
+ 	color: #222;
+ 	white-space: nowrap;
+ 	-webkit-user-select: none;
+ 	-moz-user-select: none;
+ 	-ms-user-select: none;
+ 	user-select: none;
+ 	pointer-events: none;
+ 	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+ 	}
+ .leaflet-tooltip.leaflet-interactive {
+ 	cursor: pointer;
+ 	pointer-events: auto;
+ 	}
+ .leaflet-tooltip-top:before,
+ .leaflet-tooltip-bottom:before,
+ .leaflet-tooltip-left:before,
+ .leaflet-tooltip-right:before {
+ 	position: absolute;
+ 	pointer-events: none;
+ 	border: 6px solid transparent;
+ 	background: transparent;
+ 	content: "";
+ 	}
+ 
+ /* Directions */
+ 
+ .leaflet-tooltip-bottom {
+ 	margin-top: 6px;
+ }
+ .leaflet-tooltip-top {
+ 	margin-top: -6px;
+ }
+ .leaflet-tooltip-bottom:before,
+ .leaflet-tooltip-top:before {
+ 	left: 50%;
+ 	margin-left: -6px;
+ 	}
+ .leaflet-tooltip-top:before {
+ 	bottom: 0;
+ 	margin-bottom: -12px;
+ 	border-top-color: #fff;
+ 	}
+ .leaflet-tooltip-bottom:before {
+ 	top: 0;
+ 	margin-top: -12px;
+ 	margin-left: -6px;
+ 	border-bottom-color: #fff;
+ 	}
+ .leaflet-tooltip-left {
+ 	margin-left: -6px;
+ }
+ .leaflet-tooltip-right {
+ 	margin-left: 6px;
+ }
+ .leaflet-tooltip-left:before,
+ .leaflet-tooltip-right:before {
+ 	top: 50%;
+ 	margin-top: -6px;
+ 	}
+ .leaflet-tooltip-left:before {
+ 	right: 0;
+ 	margin-right: -12px;
+ 	border-left-color: #fff;
+ 	}
+ .leaflet-tooltip-right:before {
+ 	left: 0;
+ 	margin-left: -12px;
+ 	border-right-color: #fff;
+ 	}
+ 
+ /* Printing */
+ 
+ @media print {
+ 	/* Prevent printers from removing background-images of controls. */
+ 	.leaflet-control {
+ 		-webkit-print-color-adjust: exact;
+ 		print-color-adjust: exact;
+ 		}
+ 	}
+ 
+</style>
+
+</head>
+<body>
+<div class="loading" id="loading">Cargando proyectos…</div>
+
+<div class="prog" id="prog"></div>
+<button class="fab" id="fab" type="button" aria-label="Volver arriba" hidden>↑</button>
+<div class="hero" id="hero">
+  <div class="wrap"><nav class="topnav" aria-label="Secciones de la página"><span class="logo"><span class="mk" aria-hidden="true"></span>Proyectos SEIA</span>
+    <div class="links"><a href="#chips">Resumen</a><a href="#a-tiempo">Tiempo</a><a href="#a-sector">Sector</a><a href="#a-mapa">Territorio</a><a href="#sec-tabla">Proyectos</a><a href="#a-notas">Notas</a></div></nav></div>
+  <div class="wrap hero-in">
+    <div class="hero-txt">
+      <p class="eyebrow">Sistema de Evaluación de Impacto Ambiental · SEIA</p>
+      <h1>Proyectos en <span>evaluación ambiental</span></h1>
+      <p class="hero-reg"><span id="hero-reg">Región de O'Higgins</span><svg class="squig" viewBox="0 0 220 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 7 C 20 0, 36 12, 56 6 S 92 1, 110 7 S 150 12, 168 5 S 204 2, 218 7"/></svg></p>
+      <p class="lede">Lo que ya fue calificado y lo que está ingresando al sistema, con su ubicación y su inversión. Datos del e-SEIA al <b id="corte">…</b>.</p>
+      <div class="modes">
+        <button class="mode" id="mode-C" type="button" aria-pressed="true">
+          <span class="m-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>
+          <span class="m-b"><span class="m-t">Calificados</span>
+          <span class="m-n"><b class="num" id="cnt-C">0</b> proyectos con trámite finalizado</span></span>
+        </button>
+        <button class="mode" id="mode-P" type="button" aria-pressed="false">
+          <span class="m-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></span>
+          <span class="m-b"><span class="m-t">Presentados</span>
+          <span class="m-n"><b class="num" id="cnt-P">0</b> proyectos ingresados al SEIA</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="hero-viz" aria-hidden="true"><svg id="hero-svg" viewBox="0 0 440 330" focusable="false"></svg>
+      <div class="viz-card"><b class="num" id="vz-n">0</b><span>proyectos en la vista</span><em class="num" id="vz-i"></em></div>
+      <p class="viz-cap">Cada punto es un proyecto. Más grande, más inversión.</p></div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 52" preserveAspectRatio="none" aria-hidden="true"><path fill="#fff" d="M0,30 C180,60 330,4 560,26 C790,48 960,8 1180,28 C1290,38 1380,30 1440,22 L1440,52 L0,52 Z"/></svg>
+</div>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <div class="f f-reg"><label for="f-reg">Región</label><select id="f-reg"></select></div>
+    <div class="f f-y"><label for="f-from">Desde</label><select id="f-from"></select></div>
+    <div class="f f-y"><label for="f-to">Hasta</label><select id="f-to"></select></div>
+    <div class="f f-m"><label for="f-mes">Mes</label><select id="f-mes"></select></div>
+    <div class="f f-t"><label for="f-tipo">Tipo</label>
+      <select id="f-tipo"><option value="all">Todos</option><option value="DIA">DIA</option><option value="EIA">EIA</option></select></div>
+    <div class="f f-i"><label for="f-inv">Inversión mínima</label>
+      <select id="f-inv">
+        <option value="0">Sin mínimo</option><option value="1">Desde MMU$ 1</option><option value="10">Desde MMU$ 10</option>
+        <option value="50">Desde MMU$ 50</option><option value="100">Desde MMU$ 100</option><option value="500">Desde MMU$ 500</option>
+      </select></div>
+    <div class="f f-q"><label for="f-q">Buscar</label><input id="f-q" type="search" placeholder="Proyecto, titular o comuna" autocomplete="off"></div>
+    <div class="acts">
+      <button class="btn pri" id="btn-minuta" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+        <span id="lbl-minuta">Minuta Word</span></button>
+      <button class="btn sec" id="btn-xlsx" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+        Excel de esta vista</button>
+      <button class="btn" id="btn-clear" type="button">Limpiar filtros</button>
+      <span class="sp"></span>
+      <span class="sumline" id="sumline"></span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="chips" id="chips" role="group" aria-label="Filtrar por estado"></div>
+  <div class="kpis" id="kpis"></div>
+  <p class="kick" style="margin:30px 0 12px">Lo que llama la atención</p>
+  <div class="insights" id="insights"></div>
+
+  <div class="sec-h">
+    <div><span class="kick">Tiempo</span><h2 id="a-tiempo">Evolución en el tiempo</h2><p id="t-evo"></p></div>
+    <div class="seg" role="group" aria-label="Medida de los gráficos">
+      <button type="button" id="met-n" aria-pressed="true">Proyectos</button>
+      <button type="button" id="met-inv" aria-pressed="false">Inversión (MMU$)</button>
+    </div>
+  </div>
+  <div class="grid">
+    <section class="card c7">
+      <h3 id="h-year">Por año</h3><p class="cap" id="cap-year">Clic en un año para filtrarlo.</p>
+      <div class="cbox" style="height:310px"><canvas id="ch-year" aria-label="Proyectos por año y estado" role="img"></canvas></div>
+    </section>
+    <section class="card c5">
+      <h3 id="h-mes">Por mes</h3><p class="cap" id="cap-mes"></p>
+      <div class="cbox" style="height:310px"><canvas id="ch-mes" aria-label="Proyectos por mes" role="img"></canvas></div>
+    </section>
+    <section class="card c12">
+      <h3>Calendario año y mes</h3><p class="cap">Más oscuro significa más proyectos (o más inversión). Clic en una celda para filtrar ese mes.</p>
+      <div id="heat"></div>
+    </section>
+  </div>
+
+  <div class="sec-h"><div><span class="kick">Sector y estado</span><h2 id="a-sector">Sector productivo y estado</h2><p id="t-sec"></p></div></div>
+  <div class="grid">
+    <section class="card c7">
+      <h3>Por sector productivo</h3><p class="cap">Clic en una barra para filtrar el sector.</p>
+      <div class="cbox" id="box-sector"><canvas id="ch-sector" aria-label="Proyectos por sector productivo" role="img"></canvas></div>
+    </section>
+    <section class="card c5">
+      <h3>Por estado del proyecto</h3><p class="cap">Clic en un estado para filtrarlo.</p>
+      <div class="donut-wrap">
+        <div class="donut-c"><canvas id="ch-estado" aria-label="Proyectos por estado" role="img"></canvas>
+          <div class="mid"><b id="d-n">0</b><span id="d-l">proyectos</span></div></div>
+        <ul class="elist" id="elist"></ul>
+      </div>
+    </section>
+  </div>
+
+  <div class="sec-h"><div><span class="kick">Territorio</span><h2 id="a-mapa">Dónde está la inversión</h2><p id="t-map"></p></div></div>
+  <section class="card c12" style="padding:14px">
+    <div class="mapbar">
+      <div class="f"><label for="m-capa">Capa</label>
+        <select id="m-capa"><option value="proj">Proyectos (puntos)</option><option value="com">Intensidad por comuna</option><option value="reg">Resumen por región</option></select></div>
+      <div class="f"><label for="m-color">Color por</label>
+        <select id="m-color"><option value="estado">Estado</option><option value="sector">Sector</option></select></div>
+      <div class="f"><label for="m-lab">Nombres</label>
+        <select id="m-lab"><option value="si">Comunas y regiones</option><option value="no">Sin nombres</option></select></div>
+      <div class="f"><label for="m-base">Mapa base</label>
+        <select id="m-base"><option value="simple">Simple (sin conexión)</option><option value="calles">Calles</option></select></div>
+      <span class="sumline" id="m-note"></span>
+    </div>
+    <div id="map" role="region" aria-label="Mapa de proyectos"></div>
+    <div class="maplegend" id="maplegend"></div>
+  </section>
+
+  <div class="grid" style="margin-top:12px">
+    <section class="card c4">
+      <h3>Comunas con más proyectos</h3><p class="cap">Un proyecto multicomunal cuenta en cada comuna. Clic para filtrar.</p>
+      <div class="cbox" id="box-comuna"><canvas id="ch-comuna" aria-label="Proyectos por comuna" role="img"></canvas></div>
+    </section>
+    <section class="card c4">
+      <h3>Comparación entre regiones</h3><p class="cap">La región seleccionada va en naranja. Clic para cambiar de región.</p>
+      <div class="cbox" id="box-region"><canvas id="ch-region" aria-label="Proyectos por región" role="img"></canvas></div>
+    </section>
+    <section class="card c4">
+      <h3>Mayores titulares</h3><p class="cap">Por inversión declarada en la vista actual.</p>
+      <ul class="tlist" id="tlist"></ul>
+    </section>
+  </div>
+
+  <div class="sec-h" id="sec-tabla"><div><span class="kick">Detalle</span><h2 id="h-tabla">Proyectos</h2><p id="t-sub"></p></div>
+    <button class="btn" id="btn-up" type="button">↑ Volver a los gráficos</button></div>
+  <div class="tscroll"><table class="tbl" id="tbl"><thead></thead><tbody></tbody></table></div>
+  <div class="pager" id="pager"></div>
+
+  <section class="notes" id="a-notas">
+    <h2>Cómo leer estas cifras</h2>
+    <ul>
+      <li><b>Calificados</b>: proyectos cuyo trámite terminó en el período, ordenados por fecha de calificación. Incluye aprobados, rechazados, desistidos, no admitidos a tramitación, no calificados y otros términos (revocado, renuncia a la RCA, abandonado, en admisión).</li>
+      <li><b>Presentados</b>: proyectos ordenados por fecha de presentación, con el estado que tienen hoy. Un proyecto puede estar en las dos vistas.</li>
+      <li><b>Inversión (MMU$)</b>: millones de dólares declarados por el titular al ingresar. No corresponde a inversión ejecutada.</li>
+      <li><b>Tasa de aprobación</b>: aprobados sobre la suma de aprobados y rechazados. <b>Plazo</b>: días corridos entre la presentación y la calificación, no los días hábiles del procedimiento oficial.</li>
+      <li><b>Mapa</b>: cada proyecto aparece en el punto representativo que informó al e-SEIA, pero antes se contrastó con los límites de la comuna declarada. Si el punto cae dentro de ella (o a menos de 3 km, sobre tierra), se mantiene. Si tenía un error evidente de digitación (por ejemplo, una longitud en pleno océano) y al corregirlo queda dentro de la comuna, se corrige. Si no se puede recuperar, se muestra con borde punteado en un punto de la comuna declarada (<i>ubicación referencial</i>). Solo se grafican en el mar los proyectos de acuicultura y pesca. En el Excel se conservan las coordenadas originales y la calidad de cada ubicación. Los proyectos lineales o de varias comunas se muestran en un solo punto.</li>
+      <li>Puede haber diferencias menores con los informes trimestrales del SEA por la fecha de corte y el criterio de conteo. Los proyectos presentados de 2020 podrían omitir ingresos de fines de 2019 que se presentaron en 2020.</li>
+    </ul>
+  </section>
+</main>
+<footer class="foot">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path fill="#EDF2F8" d="M0,0 L1440,0 L1440,14 C1200,40 1000,0 760,20 C520,40 280,6 0,26 Z"/></svg>
+  <div class="wrap"><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <b>Proyectos SEIA</b>
+    <p>Fuente: Servicio de Evaluación Ambiental (SEA), e-SEIA, seia.sea.gob.cl. Listados descargados el <span id="corte2"></span>. Las cifras de inversión son las declaradas por los titulares en millones de dólares (MMU$).</p>
+  </div>
+</footer>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const MES_L = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const ESTADOS = [
+  {k:'Aprobado',l:'Aprobado',c:'#006EDC'},
+  {k:'Rechazado',l:'Rechazado',c:'#E74100'},
+  {k:'Desistido',l:'Desistido',c:'#7A8794'},
+  {k:'No Admitido a Tramitación',l:'No admitido a tramitación',c:'#8E5BB5'},
+  {k:'No calificado',l:'No calificado',c:'#1AA3A3'},
+  {k:'En Calificación',l:'En calificación',c:'#B38600'},
+  {k:'Otros',l:'Otros',c:'#AEB6BF'}
+];
+const EC = Object.fromEntries(ESTADOS.map(e=>[e.k,e.c]));
+const EL = Object.fromEntries(ESTADOS.map(e=>[e.k,e.l]));
+const ELS = {'No Admitido a Tramitación':'No admitido'};
+const SECT_TOP = ['Energía','Inmobiliarios','Minería','Saneamiento Ambiental','Otros'];
+const SECT_COL = ['#006EDC','#E74100','#1AA3A3','#8E5BB5','#B38600'];
+const SECT_REST = '#AEB6BF';
+const REG_ORDER = ['Arica y Parinacota','Tarapacá','Antofagasta','Atacama','Coquimbo','Valparaíso','Metropolitana',"O'Higgins",'Maule','Ñuble','Biobío','La Araucanía','Los Ríos','Los Lagos','Aysén','Magallanes','Interregional'];
+const NAVY='#003D6B', BLUE='#006EDC', ORANGE='#E74100', INK='#12253A', INK2='#46586B', GRID='#E8EDF3';
+
+const fmtN = v => Math.round(v).toLocaleString('es-CL');
+const fmtI = v => Math.abs(v)>=100 ? Math.round(v).toLocaleString('es-CL') : v.toLocaleString('es-CL',{maximumFractionDigits:1});
+const fmtP = v => (v*100).toLocaleString('es-CL',{maximumFractionDigits:1})+'%';
+const fmtD = s => s ? s.slice(8,10)+'-'+s.slice(5,7)+'-'+s.slice(0,4) : '';
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const URLF = id => 'https://seia.sea.gob.cl/expediente/expediente.php?id_expediente='+id+'&modo=ficha';
+const regFull = r => r==='Nacional' ? 'Nivel nacional' : r==='Interregional' ? 'Proyectos interregionales' : r==='Metropolitana' ? 'Región Metropolitana' :
+  (['Maule','Biobío'].includes(r) ? 'Región del '+r : 'Región de '+r);
+const regEn = r => r==='Nacional' ? 'a nivel nacional' : r==='Interregional' ? 'en proyectos interregionales' : 'en la '+regFull(r);
+const listJoin = a => a.length<=1 ? a.join('') : a.slice(0,-1).join(', ')+' y '+a[a.length-1];
+const cut = (s,n) => s.length>n ? s.slice(0,n-1).trimEnd()+'…' : s;
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>{t.hidden=true},3800); }
+
+const loadJSON = u => fetch(u).then(r=>{ if(!r.ok) throw new Error(u+' '+r.status); return r.json(); });
+Promise.all([loadJSON('data/proyectos.json'),loadJSON('data/chile.json'),loadJSON('data/meta.json'),loadJSON('data/comunas.json')])
+  .then(a=>init(a[0],a[1],a[2],a[3]))
+  .catch(err=>{ console.error(err); $('#loading').innerHTML='<div style="max-width:520px;padding:24px;text-align:center">No se pudieron cargar los datos.<br><span style="font-weight:400;font-size:14px;color:#46586B">Abre la página desde su dirección web publicada (no como archivo suelto) y verifica que la carpeta <b>data</b> esté junto a index.html.</span></div>'; });
+
+function init(DATA, CHILE, META, COM){
+  /* ---------- preparación ---------- */
+  DATA.forEach(r=>{
+    r.yp = r.fp ? +r.fp.slice(0,4) : 0; r.mp = r.fp ? +r.fp.slice(5,7) : 0;
+    r.yc = r.fc ? +r.fc.slice(0,4) : 0; r.mc = r.fc ? +r.fc.slice(5,7) : 0;
+    r.cs = r.c.split('-').map(x=>x.trim()).filter(Boolean);
+    r.dias = (r.fp && r.fc) ? Math.round((Date.parse(r.fc)-Date.parse(r.fp))/864e5) : null;
+    r.hay = (r.n+' '+r.ti+' '+r.c+' '+r.s).toLowerCase();
+  });
+  const YMIN = Math.min(...DATA.filter(r=>r.p&&r.yp).map(r=>r.yp), ...DATA.filter(r=>r.k&&r.yc).map(r=>r.yc));
+  const YMAX = Math.max(...DATA.filter(r=>r.p).map(r=>r.yp), ...DATA.filter(r=>r.k).map(r=>r.yc));
+  const CORTE = META.corte, CORTE_M = +CORTE.slice(5,7), CORTE_Y = +CORTE.slice(0,4);
+  const REGS = REG_ORDER.filter(x=>DATA.some(r=>r.r===x));
+  $('#corte').textContent = fmtD(CORTE); $('#corte2').textContent = fmtD(CORTE);
+
+  const S = {mode:'C', region:"O'Higgins", yFrom:YMIN, yTo:YMAX, month:0, estados:new Set(), sectores:new Set(), comuna:'', tipo:'all', invMin:0, q:'', metric:'n', sort:{k:'inv',dir:-1}, page:0, capa:'proj', color:'estado', base:'simple', labels:'si'};
+  const PAGE = 20;
+
+  function setMode(m){ S.mode=m; DATA.forEach(r=>{ if(m==='C'){r.y=r.yc;r.m=r.mc;r.d=r.fc;} else {r.y=r.yp;r.m=r.mp;r.d=r.fp;} }); }
+  setMode('C');
+
+  function pass(r, skip, mode){
+    const md = mode || S.mode;
+    if (md==='C' ? !r.k : !r.p) return false;
+    const y = md==='C' ? r.yc : r.yp, m = md==='C' ? r.mc : r.mp;
+    if (!skip.includes('region') && S.region!=='Nacional' && r.r!==S.region) return false;
+    if (!skip.includes('year') && (y<S.yFrom || y>S.yTo)) return false;
+    if (!skip.includes('month') && S.month && m!==S.month) return false;
+    if (!skip.includes('estado') && S.estados.size && !S.estados.has(r.e)) return false;
+    if (!skip.includes('sector') && S.sectores.size && !S.sectores.has(r.s)) return false;
+    if (!skip.includes('comuna') && S.comuna && !r.cs.includes(S.comuna)) return false;
+    if (S.tipo!=='all' && r.t!==S.tipo) return false;
+    if (S.invMin && r.inv<S.invMin) return false;
+    if (S.q && r.hay.indexOf(S.q)<0) return false;
+    return true;
+  }
+  const rowsFor = (...skip) => DATA.filter(r=>pass(r,skip));
+  function agg(rows, keyFn){
+    const m = new Map();
+    rows.forEach(r=>{ const ks = keyFn(r); (Array.isArray(ks)?ks:[ks]).forEach(k=>{ if(k==null||k==='') return;
+      let o = m.get(k); if(!o){ o={k,n:0,inv:0,e:{}}; m.set(k,o); } o.n++; o.inv+=r.inv; o.e[r.e]=(o.e[r.e]||0)+1; }); });
+    return m;
+  }
+  const mv = o => S.metric==='n' ? o.n : o.inv;
+  const fmtM = (v) => S.metric==='n' ? fmtN(v) : fmtI(v);
+  const axisM = v => S.metric==='n' ? fmtN(v) : (v>=1000 ? (v/1000).toLocaleString('es-CL',{maximumFractionDigits:1})+' mil' : fmtN(v));
+  const unitM = () => S.metric==='n' ? 'proyectos' : 'MMU$';
+
+  /* ---------- controles ---------- */
+  const selReg = $('#f-reg');
+  selReg.innerHTML = '<option value="Nacional">Todo Chile</option>' + REGS.map(r=>`<option value="${esc(r)}">${esc(regFull(r))}</option>`).join('');
+  selReg.value = S.region;
+  const yrs = []; for(let y=YMIN;y<=YMAX;y++) yrs.push(y);
+  $('#f-from').innerHTML = yrs.map(y=>`<option>${y}</option>`).join(''); $('#f-from').value = S.yFrom;
+  $('#f-to').innerHTML = yrs.map(y=>`<option>${y}</option>`).join(''); $('#f-to').value = S.yTo;
+  $('#f-mes').innerHTML = '<option value="0">Todos</option>' + MES_L.map((m,i)=>`<option value="${i+1}">${m[0].toUpperCase()+m.slice(1)}</option>`).join('');
+
+  function syncControls(){
+    selReg.value=S.region; $('#f-from').value=S.yFrom; $('#f-to').value=S.yTo; $('#f-mes').value=S.month;
+    $('#f-tipo').value=S.tipo; $('#f-inv').value=S.invMin; $('#f-q').value=S.q;
+    $('#mode-C').setAttribute('aria-pressed',S.mode==='C'); $('#mode-P').setAttribute('aria-pressed',S.mode==='P');
+    $('#met-n').setAttribute('aria-pressed',S.metric==='n'); $('#met-inv').setAttribute('aria-pressed',S.metric==='inv');
+    $('#lbl-minuta').textContent = S.region==='Nacional' ? 'Minuta Word (Chile)' : 'Minuta Word de '+(S.region==='Interregional'?'proyectos interregionales':S.region);
+  }
+  function go(fn){ fn(); S.page=0; render(); }
+  function toTable(){ const el=$('#sec-tabla'); if(!el) return;
+    setTimeout(()=>{ el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+      const t=$('.tscroll'); t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash'); },60); }
+  function goT(fn){ fn(); S.page=0; render(); if(S.estados.size) toTable(); }
+  $('#btn-up').addEventListener('click',()=>{ const e=$('#chips'); e.scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('#kpis').addEventListener('click',ev=>{ const d=ev.target.closest('.kpi[data-e]'); if(d) kpiGo(d.dataset.e); });
+  $('#kpis').addEventListener('keydown',ev=>{ if(ev.key!=='Enter'&&ev.key!==' ') return; const d=ev.target.closest('.kpi[data-e]'); if(d){ ev.preventDefault(); kpiGo(d.dataset.e); } });
+  function kpiGo(k){
+    if(k==='__all'){ S.estados.clear(); S.page=0; render(); toTable(); return; }
+    if(S.estados.size===1 && S.estados.has(k)){ S.estados.clear(); S.page=0; render(); return; }
+    S.estados=new Set([k]); S.page=0; render(); toTable(); }
+  selReg.addEventListener('change',()=>go(()=>{S.region=selReg.value;S.comuna='';}));
+  $('#f-from').addEventListener('change',e=>go(()=>{S.yFrom=+e.target.value; if(S.yTo<S.yFrom)S.yTo=S.yFrom;}));
+  $('#f-to').addEventListener('change',e=>go(()=>{S.yTo=+e.target.value; if(S.yFrom>S.yTo)S.yFrom=S.yTo;}));
+  $('#f-mes').addEventListener('change',e=>go(()=>{S.month=+e.target.value;}));
+  $('#f-tipo').addEventListener('change',e=>go(()=>{S.tipo=e.target.value;}));
+  $('#f-inv').addEventListener('change',e=>go(()=>{S.invMin=+e.target.value;}));
+  let qT; $('#f-q').addEventListener('input',e=>{ clearTimeout(qT); const v=e.target.value.trim().toLowerCase(); qT=setTimeout(()=>go(()=>{S.q=v;}),220); });
+  $('#mode-C').addEventListener('click',()=>go(()=>{setMode('C');}));
+  $('#mode-P').addEventListener('click',()=>go(()=>{setMode('P');}));
+  $('#met-n').addEventListener('click',()=>go(()=>{S.metric='n';}));
+  $('#met-inv').addEventListener('click',()=>go(()=>{S.metric='inv';}));
+  $('#btn-clear').addEventListener('click',()=>go(()=>{S.yFrom=YMIN;S.yTo=YMAX;S.month=0;S.estados.clear();S.sectores.clear();S.comuna='';S.tipo='all';S.invMin=0;S.q='';}));
+  $('#btn-xlsx').addEventListener('click',exportExcel);
+  $('#btn-minuta').addEventListener('click',()=>exportMinuta(S.region));
+  $('#m-capa').addEventListener('change',e=>{S.capa=e.target.value;renderMap(CUR,false);});
+  $('#m-color').addEventListener('change',e=>{S.color=e.target.value;renderMap(CUR,false);});
+  $('#m-base').addEventListener('change',e=>{S.base=e.target.value;applyBase();});
+  $('#m-lab').addEventListener('change',e=>{S.labels=e.target.value;updateLabels();});
+
+  /* ---------- gráficos ---------- */
+  Chart.defaults.animation.duration = 650; Chart.defaults.animation.easing = 'easeOutQuart';
+  Chart.defaults.font.family = "Inter, system-ui, Arial, sans-serif"; Chart.defaults.font.size = 12; Chart.defaults.color = INK2;
+  const charts = {};
+  const valueLabels = {id:'valueLabels', afterDatasetsDraw(chart){
+    const ctx=chart.ctx; ctx.save(); ctx.font='600 11.5px Inter, Arial, sans-serif'; ctx.fillStyle=INK; ctx.textBaseline='middle';
+    chart.getDatasetMeta(0).data.forEach((bar,i)=>{ const v=chart.data.datasets[0].data[i]; if(v==null) return; ctx.fillText(fmtM(v), bar.x+6, bar.y); });
+    ctx.restore(); }};
+  const hbar = (id, onClick) => new Chart($(id),{type:'bar',data:{labels:[],datasets:[{data:[],backgroundColor:BLUE,borderRadius:3,barPercentage:.78,categoryPercentage:.9}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      scales:{x:{beginAtZero:true,grace:'16%',grid:{color:GRID},ticks:{callback:axisM}},y:{grid:{display:false},ticks:{autoSkip:false,font:{size:11.5},callback(v){ const l=this.getLabelForValue(v); return cut(String(l),innerWidth<640?20:34); }}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtM(c.parsed.x)+' '+unitM()}}},
+      onClick:(e,els)=>{ if(els.length) onClick(els[0].index); },
+      onHover:(e,els)=>{ e.native.target.style.cursor = els.length?'pointer':'default'; }},
+    plugins:[valueLabels]});
+
+  charts.year = new Chart($('#ch-year'),{type:'bar',data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,
+    scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,grid:{color:GRID},ticks:{callback:axisM}}},
+    plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',boxWidth:8,padding:12}},
+      tooltip:{mode:'index',intersect:false,callbacks:{label:c=>' '+c.dataset.label+': '+fmtM(c.parsed.y),
+        footer:items=>'Total: '+fmtM(items.reduce((a,b)=>a+b.parsed.y,0))+' '+unitM()}}},
+    onClick:(e)=>{ const els=charts.year.getElementsAtEventForMode(e.native,'index',{intersect:false},true); if(!els.length) return;
+      const y=charts.year._years[els[0].index]; go(()=>{ if(S.yFrom===y&&S.yTo===y){S.yFrom=YMIN;S.yTo=YMAX;} else {S.yFrom=y;S.yTo=y;} }); },
+    onHover:(e,els)=>{ e.native.target.style.cursor='pointer'; }}});
+
+  charts.mes = new Chart($('#ch-mes'),{type:'bar',data:{labels:[],datasets:[{data:[],backgroundColor:BLUE,borderRadius:2,barPercentage:.9,categoryPercentage:.92}]},options:{responsive:true,maintainAspectRatio:false,
+    scales:{x:{grid:{display:false},ticks:{autoSkip:true,maxRotation:0,font:{size:11}}},y:{beginAtZero:true,grid:{color:GRID},ticks:{callback:axisM}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtM(c.parsed.y)+' '+unitM()}}}}});
+
+  charts.sector = hbar('#ch-sector', i=>{ const s=charts.sector._keys[i]; go(()=>{ S.sectores.has(s)?S.sectores.delete(s):S.sectores.add(s); }); });
+  charts.comuna = hbar('#ch-comuna', i=>{ const c=charts.comuna._keys[i]; go(()=>{ S.comuna = S.comuna===c ? '' : c; }); });
+  charts.region = hbar('#ch-region', i=>{ const r=charts.region._keys[i]; go(()=>{ S.region = S.region===r ? 'Nacional' : r; S.comuna=''; }); });
+
+  charts.estado = new Chart($('#ch-estado'),{type:'doughnut',data:{labels:[],datasets:[{data:[],backgroundColor:[],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,cutout:'66%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.label+': '+fmtM(c.parsed)+' '+unitM()}}},
+    onClick:(e,els)=>{ if(els.length){ const k=charts.estado._keys[els[0].index]; goT(()=>{ S.estados.has(k)?S.estados.delete(k):S.estados.add(k); }); } }}});
+
+  function sizeBox(id, n){ const b=$(id); const h=Math.max(150, n*27+34); if(b.style.height!==h+'px'){ b.style.height=h+'px'; } }
+
+  /* ---------- mapa ---------- */
+  const NF = x => String(x).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]/g,'').replace('marchihue','marchigue');
+  const GEO = topojson.feature(COM, COM.objects.comunas).features;
+  const CNAME = new Map(); DATA.forEach(r=>r.cs.forEach(c=>{ const k=r.r+'|'+NF(c); if(!CNAME.has(k)) CNAME.set(k,c); }));
+  const inMain = (lo,la) => la>-56.5 && la<-17 && lo>-76 && lo<-66;
+  const polysOf = g => g.type==='Polygon' ? [g.coordinates] : g.coordinates;
+  const bboxOf = pl => { let a=1e9,b=1e9,c=-1e9,d=-1e9; pl[0].forEach(p=>{ if(p[0]<a)a=p[0]; if(p[0]>c)c=p[0]; if(p[1]<b)b=p[1]; if(p[1]>d)d=p[1]; }); return [a,b,c,d]; };
+  function centroidOf(ring){ let a=0,x=0,y=0; for(let i=0,n=ring.length-1;i<n;i++){ const p0=ring[i],p1=ring[i+1],f=p0[0]*p1[1]-p1[0]*p0[1]; a+=f; x+=(p0[0]+p1[0])*f; y+=(p0[1]+p1[1])*f; } a*=.5; return a ? [y/(6*a), x/(6*a)] : null; }
+  function geomInfo(g){ let best=null, bb=null;
+    polysOf(g).forEach(pl=>{ const b=bboxOf(pl), cx=(b[0]+b[2])/2, cy=(b[1]+b[3])/2; if(!inMain(cx,cy)) return;
+      const ar=(b[2]-b[0])*(b[3]-b[1]); if(!best||ar>best.ar) best={ar,pl,b};
+      bb = bb ? [Math.min(bb[0],b[0]),Math.min(bb[1],b[1]),Math.max(bb[2],b[2]),Math.max(bb[3],b[3])] : b; });
+    let lab=null; if(best){ lab = centroidOf(best.pl[0]) || [(best.b[1]+best.b[3])/2,(best.b[0]+best.b[2])/2]; }
+    return {lab, bb: bb ? [[bb[1],bb[0]],[bb[3],bb[2]]] : null}; }
+  GEO.forEach(f=>{ const gi=geomInfo(f.geometry); f._lab=gi.lab; f._bb=gi.bb; f._k=f.properties.r+'|'+NF(f.properties.n); });
+  const REGGEO = {};
+  REGS.filter(r=>r!=='Interregional').forEach(r=>{
+    const gs = COM.objects.comunas.geometries.filter(g=>g.properties.r===r);
+    const geom = topojson.merge(COM,gs); const gi = geomInfo(geom);
+    REGGEO[r] = {geom, lab:gi.lab, bb:gi.bb, n:gs.length};
+  });
+  const comIsSel = f => S.comuna && NF(S.comuna)===NF(f.properties.n) && (S.region==='Nacional'||f.properties.r===S.region);
+
+  const map = L.map('map',{preferCanvas:true,zoomSnap:.25,minZoom:3,maxZoom:15,worldCopyJump:false});
+  map.setView([-35,-71],5);
+  map.createPane('pgon').style.zIndex=350;
+  map.createPane('pbord').style.zIndex=380; map.getPane('pbord').style.pointerEvents='none';
+  map.createPane('plab').style.zIndex=620; map.getPane('plab').style.pointerEvents='none';
+  map.createPane('pbase').style.zIndex=300;
+  L.geoJSON(CHILE,{pane:'pbase',style:{color:'#9FB3C8',weight:1,fillColor:'#F7F9FB',fillOpacity:1},interactive:false}).addTo(map);
+  const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap · © CARTO',maxZoom:19});
+  const polyR = L.canvas({pane:'pgon'}), canvasR = L.canvas({padding:.5});
+  const RAMP = ['#E6F0FB','#B7D3F4','#72A9EA','#2F78D1','#003D6B'];
+  let COMV = new Map(), REGV = new Map(), RAMPF = null;
+  function makeRamp(vals){
+    const v=vals.filter(x=>x>0).sort((a,b)=>a-b); if(!v.length) return {color:()=>'#F7F9FB',dark:()=>false,classes:[]};
+    const qs=[.2,.4,.6,.8].map(p=>v[Math.min(v.length-1,Math.floor(p*v.length))]);
+    const th=[...new Set(qs)].filter(x=>x>v[0]);
+    const cols = {1:[2],2:[1,3],3:[0,2,4],4:[0,1,3,4],5:[0,1,2,3,4]}[th.length+1].map(i=>RAMP[i]);
+    const idx = x => { let i=0; while(i<th.length && x>=th[i]) i++; return i; };
+    const classes=[]; const edges=[v[0],...th,v[v.length-1]+1];
+    for(let i=0;i<=th.length;i++) classes.push({lo:edges[i],hi:edges[i+1],last:i===th.length,c:cols[i]});
+    return {color:x=>x>0?(cols[idx(x)]||RAMP[4]):'#F7F9FB',dark:x=>x>0&&cols.length>1&&idx(x)>=cols.length-2,classes};
+  }
+  function styleCom(f){
+    const p=f.properties, sel = S.region==='Nacional' || p.r===S.region;
+    let fill = sel ? '#FFFFFF' : '#EAEFF4';
+    if(S.capa==='com' && sel){ const v=COMV.get(f._k); fill = RAMPF.color(v?(S.metric==='n'?v.n:v.inv):0); }
+    else if(S.capa==='reg'){ const v=REGV.get(p.r); fill = v ? RAMPF.color(S.metric==='n'?v.n:v.inv) : '#EAEFF4'; }
+    const on = comIsSel(f);
+    return {renderer:polyR,pane:'pgon',fillColor:fill,fillOpacity:1,color:on?ORANGE:(sel?'#8EA3B8':'#C9D3DE'),weight:on?2.6:(sel?.8:.5)};
+  }
+  const hov = html => { const e=$('#mt-h'); if(e) e.innerHTML = html; };
+  const hovDefault = () => hov('<span style="color:#6F7F8F">Pasa el cursor sobre una comuna</span>');
+  function comInfo(f){ const v=COMV.get(f._k)||{n:0,inv:0}, p=f.properties;
+    return {n:v.n,inv:v.inv,html:`<b>${esc(p.n)}</b> · ${esc(regFull(p.r))}<br>${v.n?`${fmtN(v.n)} proyecto${v.n>1?'s':''} · MMU$ ${fmtI(v.inv)}`:'Sin proyectos con estos filtros'}`}; }
+  const comLayer = L.geoJSON({type:'FeatureCollection',features:GEO},{style:styleCom,onEachFeature:(f,ly)=>{
+    ly.bindTooltip(()=>comInfo(f).html,{sticky:true,className:'ct',direction:'top',opacity:1});
+    ly.on('mouseover',()=>{ ly.setStyle({weight:2.2,color:NAVY}); const i=comInfo(f); hov(i.html); });
+    ly.on('mouseout',()=>{ comLayer.resetStyle(ly); hovDefault(); });
+    ly.on('click',()=>{ const nm=CNAME.get(f._k)||f.properties.n; go(()=>{ if(S.region==='Nacional'||S.region==='Interregional') S.region=f.properties.r; S.comuna = comIsSel(f)?'':nm; }); });
+  }}).addTo(map);
+  const meshLayer = L.geoJSON(topojson.mesh(COM,COM.objects.comunas,(a,b)=>a.properties.r!==b.properties.r),{pane:'pbord',interactive:false,style:{color:'#5E7893',weight:1.3,fill:false}}).addTo(map);
+  const selLayer = L.layerGroup().addTo(map), projLayer = L.layerGroup().addTo(map), regLayer = L.layerGroup().addTo(map), labLayer = L.layerGroup().addTo(map);
+  const ttl = L.control({position:'topright'});
+  ttl.onAdd = () => { const d=L.DomUtil.create('div','mapttl'); d.innerHTML='<b id="mt-t"></b><div id="mt-s"></div><div class="h" id="mt-h"></div>'; L.DomEvent.disableClickPropagation(d); return d; };
+  ttl.addTo(map); hovDefault();
+  function applyBase(){ if(S.base==='calles'){ tiles.addTo(map); tiles.bringToBack(); } else if(map.hasLayer(tiles)) map.removeLayer(tiles); }
+  const colOf = r => S.color==='estado' ? (EC[r.e]||'#999') : (SECT_COL[SECT_TOP.indexOf(r.s)] || SECT_REST);
+  const badge = r => `<span class="b" style="background:${EC[r.e]}22;color:${EC[r.e]==='#AEB6BF'?'#46586B':EC[r.e]}">${esc(EL[r.e]||r.e)}</span>`;
+  const QTXT={0:'Coordenada informada, dentro de su comuna',1:'Corregida',2:'Referencial (punto dentro de la comuna)',3:'Marítima (acuicultura o pesca)',4:'Sin ubicación válida'};
+  const QNOTE={1:'Coordenadas corregidas: la informada al e-SEIA tenía un error evidente o caía fuera de la comuna.',2:'Ubicación referencial: las coordenadas informadas al e-SEIA no coinciden con la comuna del proyecto. El punto muestra un lugar dentro de esa comuna, no la ubicación exacta.',3:'Ubicación marítima, propia de proyectos de acuicultura o pesca.'};
+  function popHTML(r){
+    return `<div class="pop"><h4>${esc(r.n)}</h4>${badge(r)} <span style="color:#6F7F8F;font-size:12px">${esc(r.t)} · ${esc(r.s)}</span>
+      <div class="r"><span>Titular</span><span style="text-align:right">${esc(r.ti)}</span></div>
+      <div class="r"><span>Región</span><span>${esc(regFull(r.r))}</span></div>
+      <div class="r"><span>Comuna</span><span style="text-align:right">${esc(r.c)}</span></div>
+      <div class="r"><span>Inversión</span><span><b>MMU$ ${fmtI(r.inv)}</b></span></div>
+      <div class="r"><span>Presentado</span><span>${fmtD(r.fp)||'—'}</span></div>
+      <div class="r"><span>Calificado</span><span>${fmtD(r.fc)||'—'}</span></div>
+      ${QNOTE[r.q]?`<div class="qn">${QNOTE[r.q]}</div>`:''}
+      <a class="lnk" href="${URLF(r.id)}" target="_blank" rel="noopener">Ver ficha en el SEIA ↗</a></div>`;
+  }
+  let lastFit = null;
+  function fit(){
+    if(S.comuna){ const f=GEO.find(g=>comIsSel(g)); if(f&&f._bb){ map.fitBounds(f._bb,{padding:[40,40],maxZoom:11.5}); return; } }
+    if(S.region==='Nacional' || S.region==='Interregional' || !REGGEO[S.region]){ map.fitBounds([[-55.5,-75.5],[-17.2,-66.3]],{padding:[8,8]}); return; }
+    map.fitBounds(REGGEO[S.region].bb,{padding:[24,24]});
+  }
+  map.on('popupopen',e=>{
+    const el=e.popup.getElement(); if(!el) return;
+    el.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
+      const r=b.getAttribute('data-r');
+      if(b.getAttribute('data-act')==='reg'){ map.closePopup(); S.capa='proj'; $('#m-capa').value='proj'; go(()=>{S.region=r;S.comuna='';}); }
+      else exportMinuta(r);
+    }));
+  });
+  function lblHTML(txt,cls,extra){  return L.divIcon({className:'',html:`<span class="${cls}">${esc(txt)}${extra?`<em>${extra}</em>`:''}</span>`,iconSize:[0,0]}); }
+  function updateLabels(){
+    labLayer.clearLayers(); if(S.labels==='no' || S.capa==='reg') return;
+    const z=map.getZoom(), b=map.getBounds().pad(.08);
+    const add=(pos,icon)=>{ if(pos && b.contains(pos)) L.marker(pos,{icon,interactive:false,keyboard:false,pane:'plab'}).addTo(labLayer); };
+    const comZ = S.region==='Nacional' ? 8.75 : 7.25;
+    if(z<6.5 && S.region==='Nacional'){ Object.keys(REGGEO).forEach(r=>add(REGGEO[r].lab,lblHTML(r==='Metropolitana'?'R. Metropolitana':r,'rlabel'))); return; }
+    if(z<comZ){ if(S.region!=='Nacional'&&REGGEO[S.region]) add(REGGEO[S.region].lab,lblHTML(regFull(S.region),'rlabel')); return; }
+    let n=0;
+    GEO.forEach(f=>{ if(n>260||!f._lab) return; if(S.region!=='Nacional' && f.properties.r!==S.region && z<9.5) return;
+      if(!b.contains(f._lab)) return; n++;
+      const v=COMV.get(f._k), ex = (S.capa==='com'&&v&&v.n) ? (S.metric==='n'?fmtN(v.n):fmtI(v.inv)) : '';
+      const dk = S.capa==='com' && v && RAMPF.dark(S.metric==='n'?v.n:v.inv) && (S.region==='Nacional'||f.properties.r===S.region);
+      add(f._lab,lblHTML(f.properties.n,'clabel'+(dk?' dk':''),ex)); });
+  }
+  map.on('moveend',updateLabels);
+
+  function renderMap(rows, refit){
+    projLayer.clearLayers(); regLayer.clearLayers(); selLayer.clearLayers();
+    const rc = rowsFor('comuna'), rg = rowsFor('region','comuna');
+    COMV = new Map(); rc.forEach(r=>{ if(r.r==='Interregional') return; r.cs.forEach(c=>{ const k=r.r+'|'+NF(c); const o=COMV.get(k)||{n:0,inv:0}; o.n++; o.inv+=r.inv; COMV.set(k,o); }); });
+    REGV = new Map(); rg.forEach(r=>{ const o=REGV.get(r.r)||{n:0,inv:0,e:{}}; o.n++; o.inv+=r.inv; o.e[r.e]=(o.e[r.e]||0)+1; REGV.set(r.r,o); });
+    const selR = S.region!=='Nacional' ? [...COMV.keys()].filter(k=>k.startsWith(S.region+'|')) : [...COMV.keys()];
+    RAMPF = makeRamp(S.capa==='reg' ? [...REGV.entries()].filter(e=>e[0]!=='Interregional').map(e=>S.metric==='n'?e[1].n:e[1].inv) : selR.map(k=>S.metric==='n'?COMV.get(k).n:COMV.get(k).inv));
+    comLayer.setStyle(styleCom);
+    if(REGGEO[S.region]) L.geoJSON(REGGEO[S.region].geom,{pane:'pbord',interactive:false,style:{color:ORANGE,weight:2.8,fill:false}}).addTo(selLayer);
+    const withXY = rows.filter(r=>r.la!=null), noXY = rows.length-withXY.length;
+    const nRef = withXY.filter(r=>r.q===2).length;
+    $('#m-note').textContent = (S.capa==='proj') ? [ nRef ? `${fmtN(nRef)} con ubicación referencial` : '', noXY ? `${fmtN(noXY)} sin coordenadas (no se grafican)` : '' ].filter(Boolean).join(' · ') : '';
+    // título del mapa
+    const nCom = S.region==='Nacional' ? GEO.length : (REGGEO[S.region]?REGGEO[S.region].n:0);
+    $('#mt-t').textContent = regFull(S.region) + (S.comuna?' · '+S.comuna:'');
+    const invT = rows.reduce((a,r)=>a+r.inv,0);
+    $('#mt-s').innerHTML = `${nCom?fmtN(nCom)+' comunas · ':''}<b>${fmtN(rows.length)}</b> proyectos · <span style="white-space:nowrap">MMU$ ${fmtI(invT)}</span>`;
+    const rl = c => S.metric==='n' ? (c.last ? fmtN(c.lo)+' o más' : (c.hi-1<=c.lo ? fmtN(c.lo) : fmtN(c.lo)+'–'+fmtN(c.hi-1))) : (c.last ? fmtI(c.lo)+' o más' : fmtI(c.lo)+' a '+fmtI(c.hi));
+    const ramp = () => RAMPF.classes.map(c=>`<span><i style="background:${c.c};border-radius:2px"></i>${rl(c)}</span>`).join('');
+    if(S.capa==='proj'){
+      [...withXY].sort((a,b)=>b.inv-a.inv).forEach(r=>{
+        const m = L.circleMarker([r.la,r.lo],r.q===2 ? {renderer:canvasR,radius:3+2.2*Math.log10(1+r.inv),color:'#003D6B',weight:1.3,dashArray:'2 2',fillColor:colOf(r),fillOpacity:.55} : {renderer:canvasR,radius:3+2.2*Math.log10(1+r.inv),color:'#fff',weight:1,fillColor:colOf(r),fillOpacity:.9});
+        m.bindPopup(()=>popHTML(r),{maxWidth:330}); m.addTo(projLayer);
+      });
+      let items;
+      if(S.color==='estado'){ const c=agg(withXY,r=>r.e); items=ESTADOS.filter(e=>c.has(e.k)).map(e=>[e.c,ELS[e.k]||e.l,c.get(e.k).n]); }
+      else { const c=agg(withXY,r=>SECT_TOP.includes(r.s)?r.s:'__r'); items=SECT_TOP.filter(s=>c.has(s)).map((s,i)=>[SECT_COL[i],s,c.get(s).n]); if(c.has('__r')) items.push([SECT_REST,'Resto de sectores',c.get('__r').n]); }
+      $('#maplegend').innerHTML = items.map(i=>`<span><i style="background:${i[0]}"></i>${esc(i[1])} <b class="num">${fmtN(i[2])}</b></span>`).join('') + (nRef ? `<span><i style="background:#fff;border:1.5px dashed #003D6B;box-shadow:none"></i>Ubicación referencial <b class="num">${fmtN(nRef)}</b></span>` : '') + '<span style="color:#6F7F8F">· El tamaño del punto crece con la inversión · Clic en una comuna para filtrarla</span>';
+    } else if(S.capa==='com'){
+      $('#maplegend').innerHTML = `<span><b>${S.metric==='n'?'Proyectos':'Inversión MMU$'} por comuna</b></span>` + ramp() + '<span><i style="background:#F7F9FB"></i>Sin proyectos</span><span style="color:#6F7F8F">· Clic en una comuna para ver sus proyectos en la tabla</span>';
+    } else {
+      const g = agg(rows.filter(r=>r.r!=='Interregional'),r=>r.r);
+      const maxN = Math.max(1,...[...g.values()].map(o=>o.n));
+      g.forEach((o,reg)=>{ const gi=REGGEO[reg]; if(!gi||!gi.lab) return;
+        const size = Math.round(24+32*Math.sqrt(o.n/maxN));
+        const icon = L.divIcon({className:'',html:`<div class="rb ${reg===S.region?'on':''}" style="width:${size}px;height:${size}px">${fmtN(o.n)}</div>`,iconSize:[size,size]});
+        const mk = L.marker(gi.lab,{icon});
+        mk.bindPopup(`<div class="pop"><h4>${esc(regFull(reg))}</h4>
+          <div class="r"><span>Proyectos</span><span><b>${fmtN(o.n)}</b></span></div>
+          <div class="r"><span>Inversión</span><span><b>MMU$ ${fmtI(o.inv)}</b></span></div>
+          <div class="r"><span>Aprobados</span><span>${fmtN(o.e['Aprobado']||0)}</span></div>
+          <button type="button" data-act="reg" data-r="${esc(reg)}">Ver esta región</button>
+          <button type="button" class="o" data-act="min" data-r="${esc(reg)}">Minuta Word</button></div>`);
+        mk.addTo(regLayer); });
+      $('#maplegend').innerHTML = `<span><b>${S.metric==='n'?'Proyectos':'Inversión MMU$'} por región</b></span>` + ramp() + '<span><i style="background:#E74100"></i>Región seleccionada</span><span style="color:#6F7F8F">· Clic en un círculo para el detalle y la minuta de esa región</span>';
+    }
+    const tall = (S.region==='Nacional'||S.region==='Interregional') && matchMedia('(min-width:641px)').matches;
+    const wantH = tall ? '860px' : ''; if($('#map').style.height!==wantH){ $('#map').style.height=wantH; map.invalidateSize(); lastFit=null; }
+    const key = S.region+'|'+S.comuna;
+    if(refit || lastFit!==key){ fit(); lastFit=key; }
+    updateLabels();
+  }
+
+  /* ---------- movimiento, portada y lecturas ---------- */
+  const REDUCE = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const ICON = {
+    doc:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+    ok:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+    no:'<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
+    off:'<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
+    stop:'<circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    usd:'<path d="M12 3v18M16 7.5c0-1.7-1.8-3-4-3s-4 1.1-4 3 1.8 2.6 4 3 4 1.1 4 3-1.8 3-4 3-4-1.3-4-3"/>',
+    hour:'<path d="M6 3h12M6 21h12M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9"/>',
+    big:'<path d="M3 21h18M6 21V10l6-6 6 6v11M10 21v-5h4v5"/>',
+    list:'<path d="M4 6h16M4 12h16M4 18h10"/>',
+    pin:'<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+    cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+    bolt:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+    user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'
+  };
+  const svgI = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
+  function setNum(el,to,fmt,fromZero){
+    const from = fromZero ? 0 : (+el.dataset.v||0); el.dataset.v = to;
+    if(REDUCE || from===to){ el.textContent = fmt(to); return; }
+    const t0 = performance.now(), D = 700;
+    (function step(t){ const k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3); el.textContent = fmt(from+(to-from)*e); if(k<1) requestAnimationFrame(step); else el.textContent = fmt(to); })(t0);
+  }
+  const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{threshold:.06,rootMargin:'0px 0px -30px 0px'}) : null;
+  if(io) document.documentElement.classList.add('js');
+  document.querySelectorAll('.card,.sec-h,.tscroll,.notes,.pager,.chips').forEach(e=>e.classList.add('rv'));
+  document.querySelectorAll('.rv').forEach(e=>{ if(io) io.observe(e); else e.classList.add('in'); });
+  const prog=$('#prog'), fab=$('#fab');
+  function onScroll(){ const h=document.documentElement.scrollHeight-innerHeight; prog.style.width = (h>0?Math.min(100,scrollY/h*100):0)+'%'; fab.hidden = scrollY<900; }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  document.querySelectorAll('.topnav a').forEach(a=>a.addEventListener('click',ev=>{ ev.preventDefault(); const t=document.querySelector(a.getAttribute('href')); if(t) t.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'}); }));
+  fab.addEventListener('click',()=>scrollTo({top:0,behavior:REDUCE?'auto':'smooth'}));
+
+  /* silueta de la región en la portada */
+  const HV = new Map();
+  function ringPath(ring,proj,minD){ let d='',lx=-1e9,ly=-1e9; ring.forEach((p,i)=>{ const q=proj(p); if(i===0||Math.abs(q[0]-lx)+Math.abs(q[1]-ly)>=minD||i===ring.length-1){ d+=(d?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1); lx=q[0]; ly=q[1]; } }); return d+'Z'; }
+  function heroGeom(reg){
+    if(HV.has(reg)) return HV.get(reg);
+    const polys=[], comunas=[];
+    const add=(g,arr)=>polysOf(g).forEach(pl=>{ const b=bboxOf(pl); if(inMain((b[0]+b[2])/2,(b[1]+b[3])/2)) arr.push(pl); });
+    if(REGGEO[reg]){ add(REGGEO[reg].geom,polys); GEO.forEach(f=>{ if(f.properties.r===reg) add(f.geometry,comunas); }); }
+    else Object.keys(REGGEO).forEach(r=>add(REGGEO[r].geom,polys));
+    let a=1e9,b=1e9,c=-1e9,d=-1e9; polys.forEach(pl=>{ const bb=bboxOf(pl); a=Math.min(a,bb[0]); b=Math.min(b,bb[1]); c=Math.max(c,bb[2]); d=Math.max(d,bb[3]); });
+    const W=440,H=330,pad=14, k=Math.cos(((b+d)/2)*Math.PI/180), sc=Math.min((W-2*pad)/((c-a)*k),(H-2*pad)/(d-b));
+    const ox=(W-(c-a)*k*sc)/2, oy=(H-(d-b)*sc)/2, proj=p=>[ox+(p[0]-a)*k*sc, oy+(d-p[1])*sc];
+    const res={proj, reg:polys.map(pl=>pl.map(r=>ringPath(r,proj,.7)).join('')).join(''), com:comunas.map(pl=>ringPath(pl[0],proj,.9)).join('')};
+    HV.set(reg,res); return res;
+  }
+  let lastHero=null;
+  function renderHero(rows){
+    $('#hero-reg').textContent = regFull(S.region);
+    $('#vz-n').textContent = fmtN(rows.length); $('#vz-i').textContent = 'MMU$ '+fmtI(rows.reduce((a,r)=>a+r.inv,0));
+    const g=heroGeom(S.region), pts=rows.filter(r=>r.la!=null), step=Math.max(1,Math.ceil(pts.length/260)); let dots='';
+    pts.forEach((r,i)=>{ if(i%step) return; const q=g.proj([r.lo,r.la]), pl=(i%(step*7)===0);
+      dots += `<circle class="pd${pl?' p':''}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${(1.5+Math.min(2.6,Math.log10(1+r.inv)*.9)).toFixed(1)}"${pl?` style="animation-delay:${((i*37)%26)/10}s"`:''}/>`; });
+    const sv=$('#hero-svg'); sv.innerHTML = `<path class="reg" fill-rule="evenodd" d="${g.reg}"/>${g.com?`<path class="cb" d="${g.com}"/>`:''}${dots}`;
+    if(lastHero!==S.region){ lastHero=S.region; sv.classList.remove('swap'); void sv.getBoundingClientRect(); sv.classList.add('swap');
+      const sq=document.querySelector('.squig path'); sq.classList.remove('draw'); void sq.getBoundingClientRect(); sq.classList.add('draw'); }
+  }
+
+  /* lecturas rápidas del dato */
+  function renderInsights(rows){
+    const el=$('#insights'); if(!rows.length){ el.innerHTML=''; return; }
+    const mn = S.mode==='C' ? 'calificados' : 'presentados', n=rows.length, tot=rows.reduce((a,r)=>a+r.inv,0), it=[];
+    const com=[...agg(rows,r=>r.cs).values()].sort((a,b)=>b.n-a.n)[0];
+    if(com) it.push({i:'pin',c:BLUE,h:`<b>${esc(com.k)}</b> es la comuna con más proyectos ${mn}: ${fmtN(com.n)}.`,s:`${fmtP(com.n/n)} del total, con MMU$ ${fmtI(com.inv)} declarados.`});
+    const mm=[...agg(rows,r=>r.y*100+r.m).values()].sort((a,b)=>b.n-a.n);
+    if(mm.length>1){ const t=mm[0], y=Math.floor(t.k/100), m=t.k%100; it.push({i:'cal',c:ORANGE,h:`<b>${MES_L[m-1][0].toUpperCase()+MES_L[m-1].slice(1)} de ${y}</b> fue el mes más movido, con ${fmtN(t.n)} proyectos.`,s:`El promedio mensual del período es ${(n/mm.length).toLocaleString('es-CL',{maximumFractionDigits:1})}.`}); }
+    const sec=[...agg(rows,r=>r.s).values()].sort((a,b)=>b.inv-a.inv)[0];
+    if(sec&&tot>0) it.push({i:'bolt',c:NAVY,h:`<b>${esc(sec.k)}</b> concentra la mayor inversión: MMU$ ${fmtI(sec.inv)}.`,s:`Es el ${fmtP(sec.inv/tot)} del total declarado y reúne ${fmtN(sec.n)} proyectos.`});
+    const ti=[...agg(rows,r=>r.ti).values()].sort((a,b)=>b.n-a.n)[0];
+    if(ti&&ti.n>1) it.push({i:'user',c:'#1AA3A3',h:`<b>${esc(cut(ti.k,48))}</b> aparece con más proyectos: ${fmtN(ti.n)}.`,s:`Suman MMU$ ${fmtI(ti.inv)} de inversión declarada.`});
+    el.innerHTML = it.map(x=>`<div class="ins" style="--ac:${x.c}"><span class="ic">${svgI(x.i)}</span><div><p>${x.h}</p><small>${x.s}</small></div></div>`).join('');
+  }
+
+  /* ---------- render ---------- */
+  let CUR = [];
+  function render(){
+    syncControls();
+    CUR = rowsFor();
+    const mn = S.mode==='C' ? 'calificados' : 'presentados';
+    setNum($('#cnt-C'),DATA.filter(r=>pass(r,[],'C')).length,fmtN);
+    setNum($('#cnt-P'),DATA.filter(r=>pass(r,[],'P')).length,fmtN);
+    const per = S.yFrom===S.yTo ? ''+S.yFrom : S.yFrom+'–'+S.yTo;
+    const inv = CUR.reduce((a,r)=>a+r.inv,0);
+    $('#sumline').innerHTML = `<b class="num">${fmtN(CUR.length)}</b> proyectos ${mn} · <b class="num">MMU$ ${fmtI(inv)}</b> · ${esc(regFull(S.region))} · ${per}${S.month?' · '+MES_L[S.month-1]:''}`;
+    renderHero(CUR); renderChips(); renderKPIs(CUR); renderInsights(CUR); renderYear(per); renderMes(per); renderHeat(); renderSector(); renderEstado(); renderComunas(); renderRegiones(); renderTitulares(CUR);
+    const dd = S.mode==='C' ? 'fecha de calificación' : 'fecha de presentación';
+    $('#t-evo').textContent = `${regFull(S.region)}. Los años y meses se cuentan por ${dd}.`;
+    $('#t-sec').textContent = `${regFull(S.region)}, ${per}${S.comuna?' · '+S.comuna:''}.`;
+    $('#t-map').textContent = `Los límites muestran regiones y comunas. Cada punto es un proyecto ${mn} con su ubicación declarada; también puedes ver la intensidad por comuna o el resumen por región.`;
+    renderMap(CUR,false); renderTable(CUR);
+  }
+
+  function renderChips(){
+    const c = agg(rowsFor('estado'),r=>r.e);
+    const el = $('#chips');
+    el.innerHTML = '<span class="lab">Estado · clic para ver los proyectos</span>' + ESTADOS.filter(e=>c.has(e.k)||S.estados.has(e.k)).map(e=>
+      `<button type="button" class="chip" data-k="${esc(e.k)}" aria-pressed="${S.estados.has(e.k)}"><i style="background:${e.c}"></i>${esc(EL[e.k])} <b>${fmtN(c.has(e.k)?c.get(e.k).n:0)}</b></button>`).join('') +
+      (S.estados.size||S.sectores.size||S.comuna ? '<button type="button" class="chip x" data-k="__x">Quitar selección</button>' : '');
+    el.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{ const k=b.getAttribute('data-k');
+      goT(()=>{ if(k==='__x'){S.estados.clear();S.sectores.clear();S.comuna='';} else S.estados.has(k)?S.estados.delete(k):S.estados.add(k); }); }));
+  }
+
+  function renderKPIs(rows){
+    const n=rows.length, inv=rows.reduce((a,r)=>a+r.inv,0);
+    const cnt = k => rows.filter(r=>r.e===k).length;
+    const apr=cnt('Aprobado'), rec=cnt('Rechazado'), des=cnt('Desistido'), noa=cnt('No Admitido a Tramitación'), enc=cnt('En Calificación');
+    const big = rows.reduce((a,r)=>(!a||r.inv>a.inv)?r:a,null);
+    const dias = rows.filter(r=>r.e==='Aprobado'&&r.dias!=null&&r.dias>=0).map(r=>r.dias);
+    const meanD = dias.length ? dias.reduce((a,b)=>a+b,0)/dias.length : null;
+    const encInv = rows.filter(r=>r.e==='En Calificación').reduce((a,r)=>a+r.inv,0);
+    const cu=(v,f)=>`<span class="cu" data-to="${v}" data-f="${f}">${f==='i'?fmtI(v):fmtN(v)}</span>`;
+    const t=(l,v,s,o={})=>{ const e=o.e, on = e && e!=='__all' && S.estados.size===1 && S.estados.has(e);
+      return `<div class="kpi ${o.cls||''}${e?' click':''}" style="--ac:${o.ac||BLUE}" ${e?`data-e="${esc(e)}" role="button" tabindex="0" aria-pressed="${on}" title="Ver estos proyectos en la tabla"`:''}><span class="ic">${svgI(o.ic||'doc')}</span><div class="k-l">${l}</div><div class="k-v">${v}${o.u?`<small>${o.u}</small>`:''}</div><div class="k-s">${s||'&nbsp;'}</div>${e?'<div class="go">Ver proyectos ↓</div>':''}</div>`; };
+    const E=EC; let h;
+    if(S.mode==='C'){
+      h = t('Proyectos calificados',cu(n,'n'),'con trámite finalizado en el período',{cls:'hl',e:'__all',ic:'doc',ac:BLUE})
+        + t('Inversión declarada',cu(inv,'i'),'millones de dólares',{u:'MMU$',ic:'usd',ac:NAVY})
+        + t('Aprobados',cu(apr,'n'),(apr+rec)? 'Tasa de aprobación '+fmtP(apr/(apr+rec)) : 'Sin proyectos con resolución',{e:'Aprobado',ic:'ok',ac:E['Aprobado']})
+        + t('Rechazados',cu(rec,'n'),'resolución desfavorable',{cls:'or',e:'Rechazado',ic:'no',ac:ORANGE})
+        + t('Desistidos',cu(des,'n'),n?fmtP(des/n)+' de los calificados':'',{e:'Desistido',ic:'off',ac:E['Desistido']})
+        + t('No admitidos a tramitación',cu(noa,'n'),n?fmtP(noa/n)+' de los calificados':'',{e:'No Admitido a Tramitación',ic:'stop',ac:E['No Admitido a Tramitación']})
+        + t('Plazo promedio de aprobación',meanD!=null?cu(meanD,'n'):'—','días corridos entre presentación y calificación',{u:meanD!=null?'días':'',ic:'hour',ac:NAVY})
+        + t('Proyecto de mayor inversión',big?'MMU$ '+fmtI(big.inv):'—',big?esc(cut(big.n,80)):'',{ic:'big',ac:ORANGE});
+    } else {
+      h = t('Proyectos presentados',cu(n,'n'),'ingresados al SEIA en el período',{cls:'hl',e:'__all',ic:'doc',ac:BLUE})
+        + t('Inversión declarada',cu(inv,'i'),'millones de dólares',{u:'MMU$',ic:'usd',ac:NAVY})
+        + t('En calificación hoy',cu(enc,'n'),'MMU$ '+fmtI(encInv)+' en evaluación',{cls:'or',e:'En Calificación',ic:'clock',ac:E['En Calificación']})
+        + t('Aprobados',cu(apr,'n'),n?fmtP(apr/n)+' de los presentados':'',{e:'Aprobado',ic:'ok',ac:E['Aprobado']})
+        + t('Desistidos',cu(des,'n'),n?fmtP(des/n)+' de los presentados':'',{e:'Desistido',ic:'off',ac:E['Desistido']})
+        + t('No admitidos a tramitación',cu(noa,'n'),n?fmtP(noa/n)+' de los presentados':'',{e:'No Admitido a Tramitación',ic:'stop',ac:E['No Admitido a Tramitación']})
+        + t('DIA y EIA',fmtN(rows.filter(r=>r.t==='DIA').length)+' / '+fmtN(rows.filter(r=>r.t==='EIA').length),'declaraciones y estudios de impacto ambiental',{ic:'list',ac:BLUE})
+        + t('Proyecto de mayor inversión',big?'MMU$ '+fmtI(big.inv):'—',big?esc(cut(big.n,80)):'',{ic:'big',ac:ORANGE});
+    }
+    const k=$('#kpis'); k.innerHTML = h;
+    k.querySelectorAll('.cu').forEach(el=>setNum(el,+el.dataset.to,el.dataset.f==='i'?fmtI:fmtN,true));
+  }
+
+  function renderYear(per){
+    const rows = rowsFor('year','month');
+    const ys = yrs, c = {}; ys.forEach(y=>c[y]={});
+    rows.forEach(r=>{ if(c[r.y]){ c[r.y][r.e]=(c[r.y][r.e]||0)+(S.metric==='n'?1:r.inv); } });
+    const ch = charts.year; ch._years = ys; ch.data.labels = ys;
+    ch.data.datasets = ESTADOS.map(e=>({label:ELS[e.k]||e.l, data:ys.map(y=>c[y][e.k]||0), stack:'s', borderColor:'#fff', borderWidth:{top:1.5,right:0,bottom:0,left:0},
+      backgroundColor:ctx=>{ const y=ys[ctx.dataIndex]; return (y>=S.yFrom&&y<=S.yTo)?e.c:e.c+'4D'; }, borderRadius:0}));
+    ch.options.scales.y.title = {display:true,text:S.metric==='n'?'Proyectos':'MMU$'};
+    ch.update();
+    $('#h-year').textContent = (S.mode==='C'?'Calificados':'Presentados')+' por año';
+  }
+  function renderMes(per){
+    const rows = rowsFor('month'), ch = charts.mes;
+    const single = S.yFrom===S.yTo;
+    const lab=[], val=[], meta=[];
+    const g = new Map(); rows.forEach(r=>{ const k=r.y*100+r.m; g.set(k,(g.get(k)||0)+(S.metric==='n'?1:r.inv)); });
+    for(let y=S.yFrom;y<=S.yTo;y++) for(let m=1;m<=12;m++){
+      if(y===CORTE_Y && m>CORTE_M) continue;
+      lab.push(single?MES[m-1]:MES[m-1]+' '+String(y).slice(2)); val.push(g.get(y*100+m)||0); meta.push({y,m});
+    }
+    ch.data.labels=lab; ch.data.datasets[0].data=val;
+    ch.data.datasets[0].backgroundColor = ctx=>{ const mm=meta[ctx.dataIndex]; return (!S.month||mm.m===S.month)?BLUE:BLUE+'4D'; };
+    ch.update();
+    $('#h-mes').textContent = 'Por mes · '+per;
+    $('#cap-mes').textContent = single ? 'Distribución mensual del año.' : 'Evolución mensual en el período seleccionado.';
+  }
+  function renderHeat(){
+    const rows = rowsFor('year','month'), g = new Map(); let mx = 0;
+    rows.forEach(r=>{ const k=r.y*100+r.m; g.set(k,(g.get(k)||0)+(S.metric==='n'?1:r.inv)); });
+    g.forEach(v=>{ if(v>mx) mx=v; });
+    let h = '<table class="heat"><thead><tr><th class="yr"></th>'+MES.map(m=>`<th title="${m}"><span class="ml">${m}</span><span class="ms">${m[0].toUpperCase()}</span></th>`).join('')+'</tr></thead><tbody>';
+    yrs.forEach(y=>{ h += `<tr><th class="yr">${y}</th>`; for(let m=1;m<=12;m++){
+      const future = (y===CORTE_Y && m>CORTE_M) || y>CORTE_Y;
+      const v = g.get(y*100+m)||0, a = mx? v/mx : 0;
+      const inSel = y>=S.yFrom&&y<=S.yTo&&(!S.month||S.month===m);
+      const style = future ? 'background:#F7F9FB;color:#C3CCD6;cursor:default' : (v? `background:rgba(0,110,220,${(.12+.8*a).toFixed(2)});color:${a>.45?'#fff':INK}` : '');
+      h += `<td data-y="${y}" data-m="${m}" class="${inSel&&(S.month||S.yFrom===S.yTo)?'sel':''}" style="${style}" title="${MES_L[m-1]} ${y}: ${future?'sin datos':fmtM(v)+' '+unitM()}">${future?'':(v?(S.metric==='n'?fmtN(v):fmtN(v)):'·')}</td>`; }
+      h += '</tr>'; });
+    h += '</tbody></table>';
+    const el=$('#heat'); el.innerHTML=h;
+    el.querySelectorAll('td[data-y]').forEach(td=>td.addEventListener('click',()=>{ const y=+td.dataset.y, m=+td.dataset.m;
+      if((y===CORTE_Y&&m>CORTE_M)||y>CORTE_Y) return;
+      go(()=>{ if(S.yFrom===y&&S.yTo===y&&S.month===m){S.yFrom=YMIN;S.yTo=YMAX;S.month=0;} else {S.yFrom=y;S.yTo=y;S.month=m;} }); }));
+  }
+  function renderSector(){
+    const g = [...agg(rowsFor('sector'),r=>r.s).values()].sort((a,b)=>mv(b)-mv(a)), ch=charts.sector;
+    ch._keys = g.map(o=>o.k); ch.data.labels = ch._keys; const ds=ch.data.datasets[0]; ds.data = g.map(mv);
+    ds.backgroundColor = g.map(o=>(S.sectores.size&&!S.sectores.has(o.k))?BLUE+'55':BLUE);
+    sizeBox('#box-sector',g.length); ch.resize(); ch.update();
+  }
+  function renderEstado(){
+    const c = agg(rowsFor('estado'),r=>r.e), ch=charts.estado;
+    const arr = ESTADOS.filter(e=>c.has(e.k)||S.estados.has(e.k)).map(e=>({e,o:c.get(e.k)||{n:0,inv:0}}));
+    const tot = arr.reduce((a,x)=>a+mv(x.o),0);
+    ch._keys = arr.map(x=>x.e.k); ch.data.labels = arr.map(x=>EL[x.e.k]);
+    ch.data.datasets[0].data = arr.map(x=>mv(x.o));
+    ch.data.datasets[0].backgroundColor = arr.map(x=>(S.estados.size&&!S.estados.has(x.e.k))?x.e.c+'55':x.e.c);
+    ch.update();
+    $('#d-n').textContent = S.metric==='n'?fmtN(tot):fmtI(tot); $('#d-l').textContent = S.metric==='n'?'proyectos':'MMU$';
+    $('#elist').innerHTML = arr.map(x=>`<li><button type="button" data-k="${esc(x.e.k)}" aria-pressed="${S.estados.has(x.e.k)}"><i style="background:${x.e.c}"></i><span>${esc(EL[x.e.k])}</span><span class="v">${fmtM(mv(x.o))}</span><span class="p">${tot?fmtP(mv(x.o)/tot):''}</span></button></li>`).join('');
+    $('#elist').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>goT(()=>{ const k=b.dataset.k; S.estados.has(k)?S.estados.delete(k):S.estados.add(k); })));
+  }
+  function renderComunas(){
+    const g = [...agg(rowsFor('comuna'),r=>r.cs).values()].sort((a,b)=>mv(b)-mv(a)).slice(0,14), ch=charts.comuna;
+    ch._keys = g.map(o=>o.k); ch.data.labels = ch._keys; const ds=ch.data.datasets[0]; ds.data=g.map(mv);
+    ds.backgroundColor = g.map(o=>(S.comuna&&S.comuna!==o.k)?BLUE+'55':BLUE);
+    sizeBox('#box-comuna',g.length); ch.resize(); ch.update();
+  }
+  function renderRegiones(){
+    const g = [...agg(rowsFor('region'),r=>r.r).values()].sort((a,b)=>mv(b)-mv(a)), ch=charts.region;
+    ch._keys = g.map(o=>o.k); ch.data.labels = g.map(o=>o.k); const ds=ch.data.datasets[0]; ds.data=g.map(mv);
+    ds.backgroundColor = g.map(o=>o.k===S.region?ORANGE:BLUE);
+    sizeBox('#box-region',g.length); ch.resize(); ch.update();
+  }
+  function renderTitulares(rows){
+    const g = [...agg(rows,r=>r.ti).values()].sort((a,b)=>b.inv-a.inv).slice(0,8), mx = g.length?g[0].inv:1;
+    $('#tlist').innerHTML = g.length ? g.map(o=>`<li><span class="t-n">${esc(o.k)}</span><span class="t-v">MMU$ ${fmtI(o.inv)}</span><span class="t-b"><i style="width:${Math.max(3,o.inv/mx*100)}%"></i></span><span class="t-s">${fmtN(o.n)} proyecto${o.n>1?'s':''}</span></li>`).join('') : '<li class="empty">Sin proyectos con estos filtros.</li>';
+  }
+
+  /* ---------- tabla ---------- */
+  const COLS = [['n','Proyecto'],['s','Sector'],['e','Estado'],['ti','Titular'],['c','Comuna'],['inv','Inversión MMU$','r'],['d',null,'r'],['_','Ficha']];
+  function sorted(rows){ const k=S.sort.k, d=S.sort.dir;
+    return [...rows].sort((a,b)=>{ const x=a[k], y=b[k]; if(typeof x==='number'||typeof y==='number') return ((x||0)-(y||0))*d; return String(x||'').localeCompare(String(y||''),'es')*d; }); }
+  function renderTable(rows){
+    const dl = S.mode==='C' ? 'Fecha calificación' : 'Fecha presentación';
+    $('#tbl thead').innerHTML = '<tr>'+COLS.map(c=>{ const lab=c[1]||dl; const arrow = S.sort.k===c[0]?(S.sort.dir>0?' ▲':' ▼'):''; return `<th class="${c[2]||''}" data-k="${c[0]}" ${c[0]==='_'?'style="cursor:default"':''}>${lab}${arrow}</th>`; }).join('')+'</tr>';
+    $('#tbl thead').querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{ const k=th.dataset.k; if(k==='_') return; S.sort = S.sort.k===k?{k,dir:-S.sort.dir}:{k,dir:(k==='inv'||k==='d')?-1:1}; S.page=0; renderTable(CUR); }));
+    const s = sorted(rows), pages = Math.max(1,Math.ceil(s.length/PAGE)); if(S.page>=pages) S.page=pages-1;
+    const sl = s.slice(S.page*PAGE,(S.page+1)*PAGE);
+    $('#tbl tbody').innerHTML = sl.length ? sl.map(r=>`<tr>
+      <td class="pn">${esc(r.n)}<span class="tag ${r.t==='EIA'?'eia':''}">${esc(r.t)}</span></td>
+      <td>${esc(r.s)}</td>
+      <td><span class="badge" style="background:${EC[r.e]}22;color:${EC[r.e]==='#AEB6BF'?'#46586B':EC[r.e]}">${esc(EL[r.e]||r.e)}</span></td>
+      <td class="ti">${esc(r.ti)}</td><td>${esc(r.c)}</td>
+      <td class="r num"><b>${fmtI(r.inv)}</b></td><td class="r num">${fmtD(r.d)}</td>
+      <td><a href="${URLF(r.id)}" target="_blank" rel="noopener" aria-label="Abrir ficha en el SEIA">Ver ↗</a></td></tr>`).join('')
+      : '<tr><td colspan="8" class="empty">No hay proyectos con estos filtros.</td></tr>';
+    $('#h-tabla').textContent = 'Proyectos' + (S.estados.size ? ' · '+[...S.estados].map(k=>EL[k]||k).join(', ') : '');
+    $('#t-sub').textContent = `${fmtN(s.length)} proyectos${S.comuna?' en '+S.comuna:''} · ordenados por ${S.sort.k==='inv'?'inversión':COLS.find(c=>c[0]===S.sort.k)?.[1]?.toLowerCase()||'fecha'}.`;
+    const p=$('#pager'); p.innerHTML = `<span>Página ${S.page+1} de ${pages}</span><button type="button" id="pg-p" ${S.page===0?'disabled':''} aria-label="Página anterior">‹</button><button type="button" id="pg-n" ${S.page>=pages-1?'disabled':''} aria-label="Página siguiente">›</button>`;
+    $('#pg-p').addEventListener('click',()=>{S.page--;renderTable(CUR);}); $('#pg-n').addEventListener('click',()=>{S.page++;renderTable(CUR);});
+  }
+
+  /* ---------- descargas ---------- */
+  function saveBlob(blob,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500); }
+  const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'');
+  const THIN = {style:'thin',color:{argb:'FFD9D9D9'}};
+  function styleHead(ws,row){ row.eachCell(c=>{ c.font={name:'Arial',bold:true,size:10,color:{argb:'FFFFFFFF'}}; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF003D6B'}}; c.alignment={vertical:'middle',horizontal:'center',wrapText:true}; c.border={top:THIN,bottom:THIN,left:THIN,right:THIN}; }); row.height=30; }
+  function addSheet(wb,name,headers,data,widths,fmts){
+    const ws = wb.addWorksheet(name,{views:[{state:'frozen',ySplit:1}]});
+    ws.addRow(headers); styleHead(ws,ws.getRow(1));
+    data.forEach((d,i)=>{ const row=ws.addRow(d); row.eachCell((c,ci)=>{ c.font={name:'Arial',size:10}; c.border={top:THIN,bottom:THIN,left:THIN,right:THIN}; if(i%2) c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF3F6FA'}}; if(fmts&&fmts[ci-1]) c.numFmt=fmts[ci-1]; }); });
+    widths.forEach((w,i)=>{ ws.getColumn(i+1).width=w; });
+    ws.autoFilter = {from:{row:1,column:1},to:{row:1,column:headers.length}};
+    return ws;
+  }
+  const dt = s => s ? new Date(s+'T12:00:00') : null;
+  async function exportExcel(){
+    if(typeof ExcelJS==='undefined'){ toast('No se pudo cargar la librería de Excel. Revisa tu conexión.'); return; }
+    toast('Preparando Excel…');
+    try{
+      const rows = sorted(CUR), wb = new ExcelJS.Workbook(); wb.creator='Análisis SEIA'; wb.created=new Date();
+      const mn = S.mode==='C'?'Calificados':'Presentados', per = S.yFrom===S.yTo?''+S.yFrom:S.yFrom+'–'+S.yTo;
+      const inv = rows.reduce((a,r)=>a+r.inv,0), cntE = k=>rows.filter(r=>r.e===k).length;
+      const ws = wb.addWorksheet('Resumen'); ws.columns=[{width:34},{width:60}];
+      ws.mergeCells('A1:B1'); ws.getCell('A1').value='Proyectos en el SEIA · '+mn; ws.getCell('A1').font={name:'Arial',bold:true,size:16,color:{argb:'FF003D6B'}};
+      ws.mergeCells('A2:B2'); ws.getCell('A2').value=regFull(S.region)+' · '+per+(S.month?' · '+MES_L[S.month-1]:'')+' · datos al '+fmtD(CORTE); ws.getCell('A2').font={name:'Arial',size:11,color:{argb:'FF46586B'}};
+      const kv = [['Proyectos',rows.length],['Inversión declarada (MMU$)',Math.round(inv*10)/10],['Aprobados',cntE('Aprobado')],['Rechazados',cntE('Rechazado')],['Desistidos',cntE('Desistido')],['No admitidos a tramitación',cntE('No Admitido a Tramitación')],['No calificados',cntE('No calificado')],['En calificación',cntE('En Calificación')],['Otros',cntE('Otros')],
+        ['Tasa de aprobación (aprobados / aprobados + rechazados)',(cntE('Aprobado')+cntE('Rechazado'))?cntE('Aprobado')/(cntE('Aprobado')+cntE('Rechazado')):null]];
+      let rr=4; ws.getCell('A'+rr).value='Indicador'; ws.getCell('B'+rr).value='Valor'; styleHead(ws,ws.getRow(rr)); rr++;
+      kv.forEach(k=>{ ws.getCell('A'+rr).value=k[0]; ws.getCell('B'+rr).value=k[1]; ws.getCell('A'+rr).font={name:'Arial',size:10}; ws.getCell('B'+rr).font={name:'Arial',size:10,bold:true}; ws.getCell('B'+rr).alignment={horizontal:'right'}; if(k[0].startsWith('Tasa')) ws.getCell('B'+rr).numFmt='0.0%'; else if(k[0].startsWith('Inversión')) ws.getCell('B'+rr).numFmt='#,##0.0'; else ws.getCell('B'+rr).numFmt='#,##0'; rr++; });
+      rr++; ws.getCell('A'+rr).value='Filtros aplicados'; ws.getCell('A'+rr).font={name:'Arial',bold:true,size:11,color:{argb:'FF003D6B'}}; rr++;
+      [['Vista',mn+(S.mode==='C'?' (por fecha de calificación)':' (por fecha de presentación)')],['Región',regFull(S.region)],['Período',per+(S.month?' · '+MES_L[S.month-1]:'')],['Estados',S.estados.size?[...S.estados].map(k=>EL[k]).join(', '):'Todos'],['Sectores',S.sectores.size?[...S.sectores].join(', '):'Todos'],['Comuna',S.comuna||'Todas'],['Tipo',S.tipo==='all'?'DIA y EIA':S.tipo],['Inversión mínima',S.invMin?'MMU$ '+S.invMin:'Sin mínimo'],['Búsqueda',S.q||'—'],['Fuente','Servicio de Evaluación Ambiental (SEA), e-SEIA, descarga del '+fmtD(CORTE)],['Unidad','MMU$ = millones de dólares declarados por el titular']].forEach(k=>{ ws.getCell('A'+rr).value=k[0]; ws.getCell('B'+rr).value=k[1]; ws.getCell('A'+rr).font={name:'Arial',size:10,color:{argb:'FF46586B'}}; ws.getCell('B'+rr).font={name:'Arial',size:10}; ws.getCell('B'+rr).alignment={wrapText:true,vertical:'top'}; rr++; });
+
+      const ps = addSheet(wb,'Proyectos',['N°','Proyecto','Tipo','Región','Provincia','Comuna','Titular','Sector productivo','Estado','Inversión (MMU$)','Fecha presentación','Fecha calificación','Días presentación a calificación','Latitud (validada)','Longitud (validada)','Calidad de la ubicación','Latitud informada al SEIA','Longitud informada al SEIA','Ficha SEIA'],
+        rows.map((r,i)=>[i+1,r.n,r.t,regFull(r.r),r.pv,r.c,r.ti,r.s,EL[r.e]||r.e,r.inv,dt(r.fp),dt(r.fc),(r.dias!=null&&r.dias>=0)?r.dias:null,r.la,r.lo,QTXT[r.q||0],(r.o?r.o[0]:r.la),(r.o?r.o[1]:r.lo),{text:'Ver ficha',hyperlink:URLF(r.id)}]),
+        [6,60,7,24,22,22,36,24,24,14,14,14,14,12,12,34,14,14,12],[null,null,null,null,null,null,null,null,null,'#,##0.0##','dd-mm-yyyy','dd-mm-yyyy','#,##0','0.0000','0.0000',null,'0.0000','0.0000',null]);
+      ps.eachRow((row,i)=>{ if(i>1){ row.getCell(19).font={name:'Arial',size:10,color:{argb:'FF006EDC'},underline:true}; row.getCell(2).alignment={wrapText:true,vertical:'top'}; } });
+
+      const eo = ESTADOS.map(e=>e.k), eh = ESTADOS.map(e=>ELS[e.k]||e.l);
+      const byKey = (keyFn,sortFn)=>[...agg(rows,keyFn).values()].sort(sortFn);
+      const row2 = o => [o.n,Math.round(o.inv*10)/10,...eo.map(k=>o.e[k]||0)];
+      const hd = ['Proyectos','Inversión (MMU$)',...eh], wd = [12,16,...eo.map(()=>13)], fm = ['#,##0','#,##0.0',...eo.map(()=>'#,##0')];
+      addSheet(wb,'Por año',['Año',...hd],byKey(r=>r.y,(a,b)=>a.k-b.k).map(o=>[o.k,...row2(o)]),[8,...wd],[null,...fm]);
+      addSheet(wb,'Por mes',['Año','Mes',...hd],byKey(r=>r.y*100+r.m,(a,b)=>a.k-b.k).map(o=>[Math.floor(o.k/100),MES_L[o.k%100-1],...row2(o)]),[8,12,...wd],[null,null,...fm]);
+      addSheet(wb,'Por sector',['Sector productivo',...hd],byKey(r=>r.s,(a,b)=>b.n-a.n).map(o=>[o.k,...row2(o)]),[30,...wd],[null,...fm]);
+      addSheet(wb,'Por estado',['Estado',...hd.slice(0,2),'% de proyectos'],byKey(r=>r.e,(a,b)=>b.n-a.n).map(o=>[EL[o.k]||o.k,o.n,Math.round(o.inv*10)/10,rows.length?o.n/rows.length:0]),[28,12,16,14],[null,'#,##0','#,##0.0','0.0%']);
+      addSheet(wb,'Por comuna',['Comuna',...hd],byKey(r=>r.cs,(a,b)=>b.n-a.n).map(o=>[o.k,...row2(o)]),[26,...wd],[null,...fm]);
+      addSheet(wb,'Por región',['Región',...hd],byKey(r=>r.r,(a,b)=>b.n-a.n).map(o=>[regFull(o.k),...row2(o)]),[30,...wd],[null,...fm]);
+      addSheet(wb,'Por titular',['Titular','Proyectos','Inversión (MMU$)'],byKey(r=>r.ti,(a,b)=>b.inv-a.inv).slice(0,100).map(o=>[o.k,o.n,Math.round(o.inv*10)/10]),[50,12,16],[null,'#,##0','#,##0.0']);
+      const buf = await wb.xlsx.writeBuffer();
+      saveBlob(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),`SEIA_${mn}_${slug(S.region==='Nacional'?'Chile':S.region)}_${S.yFrom}-${S.yTo}.xlsx`);
+      toast('Excel listo: revisa tus descargas.');
+    }catch(e){ console.error(e); toast('No se pudo generar el Excel.'); }
+  }
+
+  /* ---------- minuta Word ---------- */
+  function chartPNG(cfg,w,h){
+    const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+    cfg.options = Object.assign({responsive:false,animation:false,devicePixelRatio:1},cfg.options);
+    cfg.plugins = [{id:'bg',beforeDraw(c){ c.ctx.save(); c.ctx.fillStyle='#fff'; c.ctx.fillRect(0,0,c.width,c.height); c.ctx.restore(); }}].concat(cfg.plugins||[]);
+    const ch=new Chart(cv,cfg); const url=cv.toDataURL('image/png'); ch.destroy();
+    const b=atob(url.split(',')[1]), u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return u;
+  }
+  async function exportMinuta(region){
+    if(typeof docx==='undefined'){ toast('No se pudo cargar la librería de Word. Revisa tu conexión.'); return; }
+    toast('Armando la minuta…');
+    try{
+      const D = docx, A = D.AlignmentType;
+      const inR = r => region==='Nacional' || r.r===region;
+      const P = DATA.filter(r=>r.p && inR(r) && r.yp>=S.yFrom && r.yp<=S.yTo);
+      const C = DATA.filter(r=>r.k && inR(r) && r.yc>=S.yFrom && r.yc<=S.yTo);
+      const EVAL = DATA.filter(r=>r.p && inR(r) && r.e==='En Calificación');
+      const sum = a => a.reduce((x,r)=>x+r.inv,0), cnt=(a,k)=>a.filter(r=>r.e===k).length;
+      const per = S.yFrom===S.yTo ? 'el año '+S.yFrom : 'el período '+S.yFrom+' a '+S.yTo;
+      const perS = S.yFrom===S.yTo ? ''+S.yFrom : S.yFrom+' – '+S.yTo;
+      const place = regEn(region);
+      const topBy = (arr,keyFn,metric)=>[...agg(arr,keyFn).values()].sort((a,b)=>(metric==='inv'?b.inv-a.inv:b.n-a.n));
+      const runs = (t,o={}) => new D.TextRun(Object.assign({text:t,font:'Arial',size:24},o));
+      const par = (t,o={}) => new D.Paragraph(Object.assign({spacing:{line:360,lineRule:'auto',after:140},alignment:A.JUSTIFIED,children:[runs(t)]},o));
+      const h1 = t => new D.Paragraph({heading:D.HeadingLevel.HEADING_1,children:[new D.TextRun({text:t,font:'Arial',size:28,bold:true,color:'003D6B'})]});
+      const h2 = t => new D.Paragraph({heading:D.HeadingLevel.HEADING_2,children:[new D.TextRun({text:t,font:'Arial',size:24,bold:true,color:'006EDC'})]});
+      const bd = {style:D.BorderStyle.SINGLE,size:4,color:'D9D9D9'}, bds={top:bd,bottom:bd,left:bd,right:bd};
+      const TW = 9360;
+      function table(head,body,widths,aligns,totalRow){
+        const cell=(t,i,o={})=>new D.TableCell({borders:bds,width:{size:widths[i],type:D.WidthType.DXA},verticalAlign:D.VerticalAlign.CENTER,margins:{top:50,bottom:50,left:80,right:80},
+          shading:o.fill?{type:D.ShadingType.CLEAR,color:'auto',fill:o.fill}:undefined,
+          children:[new D.Paragraph({alignment:(aligns&&aligns[i]==='r')?A.RIGHT:A.LEFT,spacing:{line:240,lineRule:'auto',before:0,after:0},children:[new D.TextRun({text:String(t),font:'Arial',size:18,bold:!!o.bold,color:o.color||'1F2933'})]})]});
+        const rows=[new D.TableRow({tableHeader:true,children:head.map((h,i)=>cell(h,i,{fill:'003D6B',color:'FFFFFF',bold:true}))})];
+        body.forEach((r,ri)=>rows.push(new D.TableRow({cantSplit:true,children:r.map((c,i)=>cell(c,i,{fill:ri%2?'F3F5F8':undefined}))})));
+        if(totalRow) rows.push(new D.TableRow({children:totalRow.map((c,i)=>cell(c,i,{fill:'D9D9D9',bold:true}))}));
+        return new D.Table({width:{size:TW,type:D.WidthType.DXA},columnWidths:widths,layout:D.TableLayoutType.FIXED,rows});
+      }
+      const gap = () => new D.Paragraph({spacing:{after:120},children:[]});
+      const kids = [];
+
+      // Encabezado
+      kids.push(new D.Paragraph({spacing:{after:60},children:[new D.TextRun({text:'MINUTA',font:'Arial',size:20,bold:true,color:'E74100',characterSpacing:40})]}));
+      kids.push(new D.Paragraph({spacing:{after:80,line:300,lineRule:'auto'},children:[new D.TextRun({text:'Proyectos en el Sistema de Evaluación de Impacto Ambiental',font:'Arial',size:40,bold:true,color:'003D6B'})]}));
+      kids.push(new D.Paragraph({spacing:{after:160},border:{bottom:{style:D.BorderStyle.SINGLE,size:12,color:'E74100',space:6}},children:[new D.TextRun({text:regFull(region)+'  |  '+perS+'  |  Datos al '+fmtD(CORTE),font:'Arial',size:22,color:'46586B'})]}));
+
+      // 1. Resumen
+      const apr=cnt(C,'Aprobado'), rec=cnt(C,'Rechazado'), des=cnt(C,'Desistido'), noa=cnt(C,'No Admitido a Tramitación');
+      kids.push(h1('1. Resumen'));
+      if(!P.length && !C.length){
+        kids.push(par('En '+per+' no hay proyectos presentados ni calificados '+place+' en los listados descargados del e-SEIA.'));
+      } else {
+        kids.push(par(`En ${per} se presentaron ${fmtN(P.length)} proyectos al SEIA ${place}, con una inversión declarada de MMU$ ${fmtI(sum(P))}. En el mismo lapso se calificaron ${fmtN(C.length)} proyectos: ${fmtN(apr)} aprobados y ${fmtN(rec)} rechazados, además de ${fmtN(des)} desistidos y ${fmtN(noa)} que no fueron admitidos a tramitación.`));
+        const yP = topBy(P,r=>r.yp).sort((a,b)=>b.n-a.n)[0], sP = topBy(P,r=>r.s)[0], sI = topBy(P,r=>r.s,'inv')[0];
+        if(yP && sP) kids.push(par(`El año con más proyectos presentados fue ${yP.k}, con ${fmtN(yP.n)}. El sector con más proyectos es ${sP.k} (${fmtN(sP.n)}, ${fmtP(sP.n/P.length)} del total)${sI&&sI.k!==sP.k?`, y el que concentra más inversión declarada es ${sI.k}, con MMU$ ${fmtI(sI.inv)}`:`, que también concentra la mayor inversión declarada (MMU$ ${fmtI(sP.inv)})`}.`));
+        if(EVAL.length) kids.push(par(`A la fecha de corte hay ${fmtN(EVAL.length)} proyectos en calificación ${place}, que suman MMU$ ${fmtI(sum(EVAL))}.`));
+      }
+
+      // 2. Presentados
+      kids.push(h1('2. Proyectos presentados'));
+      if(P.length){
+        const ys=[]; for(let y=S.yFrom;y<=S.yTo;y++) ys.push(y);
+        const png1 = chartPNG({type:'bar',data:{labels:ys.map(String),datasets:[
+          {label:'Presentados',data:ys.map(y=>P.filter(r=>r.yp===y).length),backgroundColor:'#006EDC',borderRadius:3},
+          {label:'Calificados',data:ys.map(y=>C.filter(r=>r.yc===y).length),backgroundColor:'#E74100',borderRadius:3}]},
+          options:{plugins:{legend:{position:'bottom',labels:{font:{size:20},usePointStyle:true}},title:{display:true,text:'Proyectos presentados y calificados por año',font:{size:24,weight:'bold'},color:'#003D6B'}},
+            scales:{x:{ticks:{font:{size:20}},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:20}},grid:{color:'#E8EDF3'}}}}},1240,560);
+        kids.push(new D.Paragraph({alignment:A.CENTER,spacing:{after:120,line:240,lineRule:'auto'},children:[new D.ImageRun({data:png1,type:'png',transformation:{width:620,height:280}})]}));
+        const ga = topBy(P,r=>r.yp).sort((a,b)=>a.k-b.k);
+        kids.push(h2('Presentados por año'));
+        kids.push(table(['Año','Proyectos','Inversión (MMU$)','DIA','EIA'],ga.map(o=>[o.k,fmtN(o.n),fmtI(o.inv),fmtN(P.filter(r=>r.yp===o.k&&r.t==='DIA').length),fmtN(P.filter(r=>r.yp===o.k&&r.t==='EIA').length)]),[1500,1900,2400,1780,1780],['l','r','r','r','r'],
+          ['Total',fmtN(P.length),fmtI(sum(P)),fmtN(P.filter(r=>r.t==='DIA').length),fmtN(P.filter(r=>r.t==='EIA').length)]));
+        kids.push(gap());
+        kids.push(h2('Presentados por sector productivo'));
+        const gs = topBy(P,r=>r.s);
+        kids.push(table(['Sector productivo','Proyectos','% del total','Inversión (MMU$)'],gs.map(o=>[o.k,fmtN(o.n),fmtP(o.n/P.length),fmtI(o.inv)]),[3900,1700,1700,2060],['l','r','r','r']));
+        kids.push(gap());
+        const top8 = topBy(P,r=>r.s,'inv').slice(0,8);
+        const png2 = chartPNG({type:'bar',data:{labels:top8.map(o=>o.k),datasets:[{data:top8.map(o=>Math.round(o.inv*10)/10),backgroundColor:'#003D6B',borderRadius:3}]},
+          options:{indexAxis:'y',plugins:{legend:{display:false},title:{display:true,text:'Inversión declarada por sector (MMU$)',font:{size:24,weight:'bold'},color:'#003D6B'}},
+            scales:{x:{beginAtZero:true,ticks:{font:{size:20}},grid:{color:'#E8EDF3'}},y:{ticks:{font:{size:20}},grid:{display:false}}}}},1240,560);
+        kids.push(new D.Paragraph({alignment:A.CENTER,spacing:{after:120,line:240,lineRule:'auto'},children:[new D.ImageRun({data:png2,type:'png',transformation:{width:620,height:280}})]}));
+        const gc = topBy(P,r=>r.cs).slice(0,3), gr = topBy(P,r=>r.r).slice(0,3);
+        if(region==='Nacional') kids.push(par('Las regiones con más proyectos presentados son '+listJoin(gr.map(o=>`${o.k} (${fmtN(o.n)})`))+'.'));
+        else if(gc.length) kids.push(par('Las comunas con más proyectos presentados son '+listJoin(gc.map(o=>`${o.k} (${fmtN(o.n)})`))+'. Los proyectos que abarcan más de una comuna se cuentan en cada una de ellas.'));
+        kids.push(h2('Diez mayores proyectos presentados'));
+        const t10 = [...P].sort((a,b)=>b.inv-a.inv).slice(0,10);
+        kids.push(table(['Proyecto','Titular','Comuna','MMU$','Estado'],t10.map(r=>[cut(r.n,70),cut(r.ti,34),cut(r.c,22),fmtI(r.inv),EL[r.e]||r.e]),[3500,2100,1400,900,1460],['l','l','l','r','l']));
+      } else kids.push(par('No hay proyectos presentados '+place+' en '+per+'.'));
+
+      // 3. Calificados
+      kids.push(h1('3. Proyectos calificados'));
+      if(C.length){
+        const rate = (apr+rec) ? fmtP(apr/(apr+rec)) : null;
+        const dias = C.filter(r=>r.e==='Aprobado'&&r.dias!=null&&r.dias>=0).map(r=>r.dias);
+        let t = `Entre los ${fmtN(C.length)} proyectos calificados ${place} en ${per}, ${fmtN(apr)} fueron aprobados y ${fmtN(rec)} rechazados`;
+        if(rate) t += `, lo que da una tasa de aprobación de ${rate} sobre los proyectos con resolución de calificación`;
+        t += `. Otros ${fmtN(des)} proyectos fueron desistidos y ${fmtN(noa)} no fueron admitidos a tramitación.`;
+        kids.push(par(t));
+        if(dias.length) kids.push(par(`El plazo promedio entre la presentación y la calificación de los proyectos aprobados fue de ${fmtN(dias.reduce((a,b)=>a+b,0)/dias.length)} días corridos.`));
+        kids.push(h2('Calificados por estado'));
+        const ge = ESTADOS.filter(e=>cnt(C,e.k)).map(e=>{ const a=C.filter(r=>r.e===e.k); return [EL[e.k],fmtN(a.length),fmtP(a.length/C.length),fmtI(sum(a))]; });
+        kids.push(table(['Estado','Proyectos','% del total','Inversión (MMU$)'],ge,[3900,1700,1700,2060],['l','r','r','r'],['Total',fmtN(C.length),'100%',fmtI(sum(C))]));
+        kids.push(gap());
+        kids.push(h2('Calificados por año y estado'));
+        const ys2=[]; for(let y=S.yFrom;y<=S.yTo;y++) ys2.push(y);
+        const rowsY = ys2.map(y=>{ const a=C.filter(r=>r.yc===y); const oth=a.length-['Aprobado','Rechazado','Desistido','No Admitido a Tramitación'].reduce((s,k)=>s+cnt(a,k),0); return [y,fmtN(cnt(a,'Aprobado')),fmtN(cnt(a,'Rechazado')),fmtN(cnt(a,'Desistido')),fmtN(cnt(a,'No Admitido a Tramitación')),fmtN(oth),fmtN(a.length)]; });
+        const othT = C.length-apr-rec-des-noa;
+        kids.push(table(['Año','Aprobados','Rechazados','Desistidos','No admitidos','Otros','Total'],rowsY,[1100,1360,1360,1360,1560,1220,1400],['l','r','r','r','r','r','r'],['Total',fmtN(apr),fmtN(rec),fmtN(des),fmtN(noa),fmtN(othT),fmtN(C.length)]));
+        kids.push(gap());
+        const ap10 = C.filter(r=>r.e==='Aprobado').sort((a,b)=>b.inv-a.inv).slice(0,10);
+        if(ap10.length){ kids.push(h2('Diez mayores proyectos aprobados')); kids.push(table(['Proyecto','Titular','Comuna','MMU$','Calificación'],ap10.map(r=>[cut(r.n,70),cut(r.ti,34),cut(r.c,22),fmtI(r.inv),fmtD(r.fc)]),[3500,2100,1400,900,1460],['l','l','l','r','l'])); }
+      } else kids.push(par('No hay proyectos calificados '+place+' en '+per+'.'));
+
+      // 4. En calificación
+      kids.push(h1('4. Proyectos en calificación a la fecha'));
+      if(EVAL.length){
+        kids.push(par(`Hay ${fmtN(EVAL.length)} proyectos presentados que siguen en calificación ${place}, con una inversión declarada de MMU$ ${fmtI(sum(EVAL))}. Se muestran los diez de mayor inversión.`));
+        kids.push(table(['Proyecto','Titular','Comuna','MMU$','Presentación'],[...EVAL].sort((a,b)=>b.inv-a.inv).slice(0,10).map(r=>[cut(r.n,70),cut(r.ti,34),cut(r.c,22),fmtI(r.inv),fmtD(r.fp)]),[3500,2100,1400,900,1460],['l','l','l','r','l']));
+      } else kids.push(par('No hay proyectos en calificación '+place+' en los listados del '+fmtD(CORTE)+'.'));
+      kids.push(gap());
+
+      // 5. Notas
+      kids.push(h1('5. Notas'));
+      ['Fuente: Servicio de Evaluación Ambiental (SEA), e-SEIA. Listados de proyectos presentados y calificados descargados el '+fmtD(CORTE)+'.',
+       'Los proyectos presentados se agrupan por fecha de presentación y los calificados por fecha de calificación. Un mismo proyecto puede aparecer en ambos conteos.',
+       'La inversión corresponde al monto en millones de dólares (MMU$) declarado por el titular al ingresar el proyecto. No es inversión ejecutada.',
+       'La tasa de aprobación se calcula como aprobados sobre la suma de aprobados y rechazados. El plazo se mide en días corridos entre la presentación y la calificación.',
+       'Los proyectos interregionales se contabilizan aparte y no se suman a ninguna región.']
+        .forEach(t=>kids.push(new D.Paragraph({spacing:{line:300,lineRule:'auto',after:80},children:[new D.TextRun({text:t,font:'Arial',size:20,color:'46586B'})]})));
+
+      const doc = new D.Document({
+        creator:'Análisis SEIA', title:'Minuta proyectos SEIA · '+regFull(region),
+        styles:{default:{document:{run:{font:'Arial',size:24},paragraph:{spacing:{line:360,lineRule:'auto'}}}},
+          paragraphStyles:[
+            {id:'Heading1',name:'Heading 1',basedOn:'Normal',next:'Normal',quickFormat:true,run:{font:'Arial',size:28,bold:true,color:'003D6B'},paragraph:{spacing:{before:320,after:140,line:300,lineRule:'auto'},keepNext:true,outlineLevel:0}},
+            {id:'Heading2',name:'Heading 2',basedOn:'Normal',next:'Normal',quickFormat:true,run:{font:'Arial',size:24,bold:true,color:'006EDC'},paragraph:{spacing:{before:200,after:100,line:300,lineRule:'auto'},keepNext:true,outlineLevel:1}}]},
+        sections:[{properties:{page:{size:{width:12240,height:15840},margin:{top:1440,right:1440,bottom:1300,left:1440}}},
+          footers:{default:new D.Footer({children:[new D.Paragraph({alignment:A.CENTER,children:[new D.TextRun({text:'Página ',font:'Arial',size:18,color:'6F7F8F'}),new D.TextRun({children:[D.PageNumber.CURRENT],font:'Arial',size:18,color:'6F7F8F'}),new D.TextRun({text:' de ',font:'Arial',size:18,color:'6F7F8F'}),new D.TextRun({children:[D.PageNumber.TOTAL_PAGES],font:'Arial',size:18,color:'6F7F8F'})]})]})},
+          children:kids}]});
+      const blob = await D.Packer.toBlob(doc);
+      saveBlob(blob,`Minuta_SEIA_${slug(region==='Nacional'?'Chile':region)}_${S.yFrom}-${S.yTo}.docx`);
+      toast('Minuta lista: revisa tus descargas.');
+    }catch(e){ console.error(e); toast('No se pudo generar la minuta.'); }
+  }
+  window.__seia = {exportMinuta, exportExcel, S, go, render, DATA, map, comLayer, GEO, polyR};
+
+  render();
+  $('#loading').remove();
+  setTimeout(()=>map.invalidateSize(),150);
+  window.addEventListener('resize',()=>map.invalidateSize());
+}
+})();
+</script>
+
+</body>
+</html>
